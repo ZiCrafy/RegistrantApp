@@ -10,14 +10,13 @@ namespace RegistrantApp.Server.Controllers;
 [Route("api/[controller]")]
 public class Accounts : BaseBaseApi
 {
-    public Accounts(LiteContext ef) : base(ef)
+    public Accounts(LiteContext ef, IConfiguration config) : base(ef, config)
     {
     }
     
     [HttpPost("Create")]
     public async Task<IActionResult> Create([FromHeader] string? token, [FromBody] dtoAccountCreate dto)
     {
-        
         return StatusCode(200);
     }
 
