@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using RegistrantApp.Server.Controllers.Base;
 using RegistrantApp.Server.Database;
+using RegistrantApp.Shared.Database;
 using RegistrantApp.Shared.Dto.Accounts;
 
 namespace RegistrantApp.Server.Controllers;
@@ -17,6 +18,8 @@ public class Accounts : BBApi
     [HttpPost("Create")]
     public async Task<IActionResult> Create([FromHeader] string? token, [FromBody] dtoAccountCreate dto)
     {
+        Account s = new Account();
+        
         return StatusCode(200);
     }
 

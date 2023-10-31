@@ -8,6 +8,5 @@ public class File
     public string FileName { get; set; }
     public byte[] Bytes { get; set; }
     public DateTime DateTimeUpload { get; set; }
-    public Account OwnerFile { get; set; }
     public bool IsDeleted { get; set; }
 }

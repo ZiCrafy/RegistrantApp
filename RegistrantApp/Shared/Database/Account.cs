@@ -12,5 +12,7 @@ public class Account
     public string? Password { get; set; }
     public bool IsEmployee { get; set; }
     public bool IsSpecialLoginUI { get; set; }
+    
+    public ICollection<Auto> Autos { get; set; }
     public bool IsDeleted { get; set; }
 }
