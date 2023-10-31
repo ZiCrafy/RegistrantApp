@@ -8,7 +8,7 @@ namespace RegistrantApp.Server.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class Accounts : BaseBaseApi
+public class Accounts : BBApi
 {
     public Accounts(LiteContext ef, IConfiguration config) : base(ef, config)
     {
