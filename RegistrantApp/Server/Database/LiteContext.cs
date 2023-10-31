@@ -14,7 +14,7 @@ public class LiteContext : DbSetTables
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlite("Data Source = LocalStorage.db");
+        optionsBuilder.UseSqlite(_config["connectionString"]);
     }
     
 }

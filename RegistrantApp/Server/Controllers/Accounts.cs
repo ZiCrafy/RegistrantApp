@@ -28,7 +28,7 @@ public class Accounts : BaseBaseApi
             .Where(account => idsAccount.Contains(account.AccountID) 
                               && account.IsDeleted == false);
 
-        if (listFound.Count() == 0)
+        if (!listFound.Any())
             return NotFound();
 
         await listFound.ForEachAsync(account =>
