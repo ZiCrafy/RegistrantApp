@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using RegistrantApp.Server.BusinessLogicLayer;
 using RegistrantApp.Server.Controllers.Base;
 using RegistrantApp.Server.Database;
-using RegistrantApp.Shared.Database;
 using RegistrantApp.Shared.Dto.Accounts;
 
 namespace RegistrantApp.Server.Controllers;
@@ -11,14 +11,18 @@ namespace RegistrantApp.Server.Controllers;
 [Route("api/[controller]")]
 public class Accounts : BBApi
 {
-    public Accounts(LiteContext ef, IConfiguration config) : base(ef, config)
+    private readonly AccountRepository _repo;
+    public Accounts(LiteContext ef, IConfiguration config, AccountRepository repo) : base(ef, config)
     {
     }
     
     [HttpPost("Create")]
-    public async Task<IActionResult> Create([FromHeader] string? token, [FromBody] dtoAccountCreate dto)
+    public async Task<IActionResult> Create([FromHeader] string token, [FromBody] dtoAccountCreate dto)
     {
-        Account s = new Account();
+        if (!ValidateToken(token, out var s))
+            return StatusCode(401);
+        
+        var temp = await _repo.Add(dto);
         
         return StatusCode(200);
     }
