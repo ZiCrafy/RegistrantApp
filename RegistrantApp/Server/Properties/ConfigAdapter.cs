@@ -3,9 +3,11 @@ using RegistrantApp.Shared.Database;
 using RegistrantApp.Shared.Dto.Accounts;
 using RegistrantApp.Shared.Dto.Auto;
 using RegistrantApp.Shared.Dto.Contragents;
+using RegistrantApp.Shared.Dto.Documents;
 using RegistrantApp.Shared.Dto.Security;
 using RegistrantApp.Shared.PresentationLayer.Accounts;
 using RegistrantApp.Shared.PresentationLayer.Contragents;
+using RegistrantApp.Shared.PresentationLayer.Documents;
 using RegistrantApp.Shared.PresentationLayer.Security;
 
 namespace RegistrantApp.Server.Properties;
@@ -56,11 +58,35 @@ public class ConfigAdapter : IRegister
             .Map(z => z.Title, x => x.Title);
         
         config.NewConfig<Contragent, dtoContragentUpdate>()
-            .Map(z => z.Title, x => x.Title);
+            .Map(z => z.Title, x => x.Title)
+            .Map(z=> z.ContragentID, x=> x.ContragentID);
 
         config.NewConfig<Contragent, ViewContragent>()
             .Map(z => z.Title, x => x.Title)
             .Map(z=> z.ContragentID, x=> x.ContragentID);
+
+        config.NewConfig<Document, dtoDocumentCreate>()
+            .Map(z => z.Title, x => x.Title)
+            .Map(z => z.Authority, x => x.Authority)
+            .Map(z => z.Number, x => x.Number)
+            .Map(z => z.Seria, x => x.Seria)
+            .Map(z => z.DateOfIssue, x => x.DateOfIssue);
+        
+        config.NewConfig<Document, dtoDocumentUpdate>()
+            .Map(z => z.Title, x => x.Title)
+            .Map(z => z.Authority, x => x.Authority)
+            .Map(z => z.Number, x => x.Number)
+            .Map(z => z.Seria, x => x.Seria)
+            .Map(z => z.DateOfIssue, x => x.DateOfIssue)
+            .Map(z=> z.DocumentID, x=> x.DocumentID);
+        
+        config.NewConfig<Document, ViewDocument>()
+            .Map(z => z.Title, x => x.Title)
+            .Map(z => z.Authority, x => x.Authority)
+            .Map(z => z.Number, x => x.Number)
+            .Map(z => z.Seria, x => x.Seria)
+            .Map(z => z.DateOfIssue, x => x.DateOfIssue)
+            .Map(z=> z.DocumentID, x=> x.DocumentID);
 
 
     }

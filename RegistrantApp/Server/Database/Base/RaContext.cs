@@ -14,4 +14,5 @@ public class RaContext : DbContext
     public DbSet<OrderDetail> OrderDetails { get; set; }
     public DbSet<Token> Tokens { get; set; }
     public DbSet<File> Files { get; set; }
+    public DbSet<Document> Documents { get; set; }
 }

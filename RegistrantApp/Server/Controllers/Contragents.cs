@@ -8,10 +8,10 @@ namespace RegistrantApp.Server.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class Contragent : BBApi
+public class Contragents : BBApi
 {
     private readonly ContragentsAdapter _adapter;
-    public Contragent(RaContext ef, IConfiguration config) : base(ef, config)
+    public Contragents(RaContext ef, IConfiguration config) : base(ef, config)
     {
         _adapter = new ContragentsAdapter(ef);
     }
