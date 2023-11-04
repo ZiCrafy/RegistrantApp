@@ -21,8 +21,8 @@ public class BBApi : ControllerBase
     {
         token = _ef.Tokens
             .Include(entity => entity.OwnerToken)
-            .FirstOrDefault(x => (x.TokenID == tokenID) && x.DateTimeSessionExpired >= DateTime.Now);
+            .FirstOrDefault(x => (x.TokenID == tokenID) && x.DateTimeSessionExpired >= DateTime.Now)!;
         
-        return token != null;
+        return token != null!;
     }
 }

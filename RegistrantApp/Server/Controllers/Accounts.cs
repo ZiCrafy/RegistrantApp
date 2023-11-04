@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using RegistrantApp.Server.BusinessLogicLayer;
 using RegistrantApp.Server.Controllers.Base;
 using RegistrantApp.Server.Database;
@@ -11,39 +10,64 @@ namespace RegistrantApp.Server.Controllers;
 [Route("api/[controller]")]
 public class Accounts : BBApi
 {
-    private readonly AccountRepository _repo;
-    public Accounts(LiteContext ef, IConfiguration config, AccountRepository repo) : base(ef, config)
+    private readonly AccountAdapter _adapter;
+
+    public Accounts(LiteContext ef, IConfiguration config) : base(ef, config)
     {
+        _adapter = new AccountAdapter(ef);
+    }
+
+    [HttpGet("GetFromId")]
+    public async Task<IActionResult> Get([FromHeader] string token, long accountId)
+    {
+        if (!ValidateToken(token, out var session))
+            return StatusCode(401);
+        
+        var view = await _adapter.Get(accountId);
+
+        return StatusCode(200, view);
+    }
+    
+    [HttpGet("Get")]
+    public async Task<IActionResult> Get([FromHeader] string token, int index, int recordsByPage, bool showEmployee,
+        bool showDeleted, string search = "")
+    {
+        if (!ValidateToken(token, out var session))
+            return StatusCode(401);
+        
+        var view = await _adapter.Get(index, recordsByPage, showEmployee, showDeleted, search);
+
+        return StatusCode(200, view);
     }
     
     [HttpPost("Create")]
     public async Task<IActionResult> Create([FromHeader] string token, [FromBody] dtoAccountCreate dto)
     {
-        if (!ValidateToken(token, out var s))
+        if (!ValidateToken(token, out var session))
             return StatusCode(401);
-        
-        var temp = await _repo.Add(dto);
-        
-        return StatusCode(200);
+
+        var view = await _adapter.Add(dto);
+
+        return StatusCode(200, view);
+    }
+
+    [HttpPut("Update")]
+    public async Task<IActionResult> Update([FromHeader] string token, [FromBody] dtoAccountUpdate dto)
+    {
+        if (!ValidateToken(token, out var session))
+            return StatusCode(401);
+
+        var view = await _adapter.Update(dto);
+        return StatusCode(200, view);
     }
 
     [HttpDelete("Delete")]
-    public async Task<IActionResult> Delete([FromHeader] string? token, long[] idsAccount)
+    public async Task<IActionResult> Delete([FromHeader] string token, long[] idsAccount)
     {
-        var listFound = _ef.Accounts
-            .Where(account => idsAccount.Contains(account.AccountID) 
-                              && account.IsDeleted == false);
-
-        if (!listFound.Any())
-            return NotFound();
-
-        await listFound.ForEachAsync(account =>
-        {
-            account.IsDeleted = true;
-            _ef.Update(account);
-        } );
+        if (!ValidateToken(token, out var session))
+            return StatusCode(401);
         
-        await _ef.SaveChangesAsync();
+        await _adapter.Delete(idsAccount);
         return StatusCode(200);
-    } 
+    }
 }

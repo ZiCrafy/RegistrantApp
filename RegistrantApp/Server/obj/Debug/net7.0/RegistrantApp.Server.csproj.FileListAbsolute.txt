@@ -98,3 +98,4 @@ C:\Users\kulagin\RiderProjects\RegistrantApp\RegistrantApp\Server\obj\Debug\net7
 C:\Users\kulagin\RiderProjects\RegistrantApp\RegistrantApp\Server\obj\Debug\net7.0\ref\RegistrantApp.Server.dll
 C:\Users\kulagin\RiderProjects\RegistrantApp\RegistrantApp\Server\bin\Debug\net7.0\Properties\message.json
 C:\Users\kulagin\RiderProjects\RegistrantApp\RegistrantApp\Server\bin\Debug\net7.0\Properties\options.json
+C:\Users\kulagin\RiderProjects\RegistrantApp\RegistrantApp\Server\obj\Debug\net7.0\RegistrantApp.Server.MvcApplicationPartsAssemblyInfo.cs

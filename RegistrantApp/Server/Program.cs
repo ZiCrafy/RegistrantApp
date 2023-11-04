@@ -14,7 +14,6 @@ builder.Services.AddRazorPages();
 builder.Services.AddDbContext<LiteContext>();
 builder.Services.AddSwaggerGen();
 builder.Services.AddMapster();
-builder.Services.AddSingleton<AccountRepository>();
 
 builder.Configuration.AddJsonFile("Properties\\options.json")
     .AddJsonFile("Properties\\message.json");
