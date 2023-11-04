@@ -1,6 +1,4 @@
-﻿using System.Globalization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
 using RegistrantApp.Server.BLL;
 using RegistrantApp.Server.Controllers.Base;
 using RegistrantApp.Server.Database.Base;

@@ -8,7 +8,5 @@ public class Auto
     public string Title { get; set; }
     public string AutoNumber { get; set; }
     public Account OwnerAuto { get; set; }
-    public DateTime DateTimeCreated { get; set; }
-    public DateTime DateTimeLastUsed { get; set; }
     public bool IsDeleted { get; set; }
 }

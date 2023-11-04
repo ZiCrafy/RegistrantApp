@@ -1,6 +1,7 @@
 ﻿using Mapster;
 using RegistrantApp.Shared.Database;
 using RegistrantApp.Shared.Dto.Accounts;
+using RegistrantApp.Shared.Dto.Auto;
 using RegistrantApp.Shared.Dto.Security;
 using RegistrantApp.Shared.PresentationLayer.Accounts;
 using RegistrantApp.Shared.PresentationLayer.Security;
@@ -41,6 +42,14 @@ public class ConfigAdapter : IRegister
         config.NewConfig<Token, dtoAccessTokenFinished>()
             .Map(z => z.Token, x => x.TokenID)
             .Map(z => z.DateTimeSessionFinished, x => x.DateTimeSessionExpired);
+
+        config.NewConfig<Auto, dtoAutoCreate>()
+            .Map(z => z.Title, x => x.Title)
+            .Map(z => z.AutoNumber, x => x.Title);
+        
+        config.NewConfig<Auto, dtoAutoUpdate>()
+            .Map(z => z.Title, x => x.Title)
+            .Map(z => z.AutoNumber, x => x.Title);
 
     }
 }

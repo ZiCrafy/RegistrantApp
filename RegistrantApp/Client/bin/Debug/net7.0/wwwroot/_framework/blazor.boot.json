@@ -198,15 +198,15 @@
       "mscorlib.dll": "sha256-8OmdVHzoN7xteY5ehp0L8R17I9QxFkH2lUVHFuslE0s=",
       "netstandard.dll": "sha256-urq+e2ZQXxmOWMRxTR92529HnUVu6+kyVnfF6SoLad8=",
       "System.Private.CoreLib.dll": "sha256-ixnF\/wVKLHZM1N0lfJufpZ41EC2LvvyiSqdW43h3Xew=",
-      "RegistrantApp.Shared.dll": "sha256-cu8h5ddZ3+jxItFzSnIyWiJHRCDtvoVOh8gfFbKGevc=",
-      "RegistrantApp.Client.dll": "sha256-5RwZZ5VrBaW9SA3FI8G1EeXKXQazegWN3iA9zXDfjTI="
+      "RegistrantApp.Shared.dll": "sha256-HiTTKIfzVlFBDKP18B2Ivd9tPhCACYqp1hAP9NRYeqQ=",
+      "RegistrantApp.Client.dll": "sha256-tco0wAnH\/2g9xqhyfLj0Dy+UBrFfPJCM5rhfXVsjaqE="
     },
     "extensions": null,
     "lazyAssembly": null,
     "libraryInitializers": null,
     "pdb": {
-      "RegistrantApp.Shared.pdb": "sha256-eE5uDwzyT+zHNzeBM1UmV0YMH4ZKcRGIbdqoi5MbOK4=",
-      "RegistrantApp.Client.pdb": "sha256-c7QNAqryD5sUApajWXIOsXCl8jGcEa7bNjIOqh0f2DE="
+      "RegistrantApp.Shared.pdb": "sha256-wbKa6eIGpz4a+LpNVB0ctT3jCvB5lYLagDuC7dkvoRc=",
+      "RegistrantApp.Client.pdb": "sha256-Ra6XcWVIeKlP7T8lnqRzhqTZnxcztbK5ZcQOvfD0\/KU="
     },
     "runtime": {
       "dotnet.7.0.12.lhmtofimja.js": "sha256-cPJgWy8SjMaYFeimGkYy23ls+rDZVmoC\/eMoHpqRc+4=",
