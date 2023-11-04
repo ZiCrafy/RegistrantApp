@@ -2,6 +2,7 @@
 using RegistrantApp.Shared.Database;
 using RegistrantApp.Shared.Dto.Accounts;
 using RegistrantApp.Shared.PresentationLayer.Accounts;
+using RegistrantApp.Shared.PresentationLayer.Security;
 
 namespace RegistrantApp.Server.Properties;
 
@@ -30,7 +31,11 @@ public class ConfigAdapter : IRegister
             .Map(z => z.PhoneNumber, x => x.PhoneNumber)
             .Map(z => z.LastName, x => x.LastName)
             .Map(z => z.MiddleName, z => z.MiddleName);
-            
-        
+
+        config.NewConfig<Token, AccessToken>()
+            .Map(z => z.Token, x => x.TokenID)
+            .Map(z => z.DateTimeSessionExpired, x => x.DateTimeSessionExpired)
+            .Map(z => z.DateTimeSessionStarted, x => x.DateTimeSessionStarted);
+
     }
 }

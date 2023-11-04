@@ -1,9 +1,8 @@
 using System.Reflection;
 using Mapster;
 using MapsterMapper;
-using Microsoft.AspNetCore.ResponseCompression;
-using RegistrantApp.Server.BusinessLogicLayer;
 using RegistrantApp.Server.Database;
+using RegistrantApp.Server.Database.Base;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
-builder.Services.AddDbContext<LiteContext>();
+builder.Services.AddDbContext<RaContext, LiteContext>();
 builder.Services.AddSwaggerGen();
 builder.Services.AddMapster();
 

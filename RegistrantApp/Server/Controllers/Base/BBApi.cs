@@ -1,16 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RegistrantApp.Server.Database;
+using RegistrantApp.Server.Database.Base;
 using RegistrantApp.Shared.Database;
 
 namespace RegistrantApp.Server.Controllers.Base;
 
 public class BBApi : ControllerBase
 {
-    protected readonly LiteContext _ef;
+    protected readonly RaContext _ef;
     protected readonly IConfiguration _config;
 
-    public BBApi(LiteContext ef, IConfiguration config)
+    public BBApi(RaContext ef, IConfiguration config)
     {
         _ef = ef;
         _config = config;
