@@ -8,7 +8,9 @@ using RegistrantApp.Shared.Dto.Security;
 using RegistrantApp.Shared.PresentationLayer.Accounts;
 using RegistrantApp.Shared.PresentationLayer.Contragents;
 using RegistrantApp.Shared.PresentationLayer.Documents;
+using RegistrantApp.Shared.PresentationLayer.Files;
 using RegistrantApp.Shared.PresentationLayer.Security;
+using File = RegistrantApp.Shared.Database.File;
 
 namespace RegistrantApp.Server.Properties;
 
@@ -88,6 +90,10 @@ public class ConfigAdapter : IRegister
             .Map(z => z.DateOfIssue, x => x.DateOfIssue)
             .Map(z=> z.DocumentID, x=> x.DocumentID);
 
+        config.NewConfig<File, ViewFile>()
+            .Map(z => z.FileName, x => x.FileName)
+            .Map(z => z.DateTimeUpload, x => x.DateTimeUpload)
+            .Map(z => z.FileID, x => x.FileID);
 
     }
 }
