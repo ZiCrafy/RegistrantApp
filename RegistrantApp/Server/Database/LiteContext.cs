@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using RegistrantApp.Server.Database.Models;
+using RegistrantApp.Server.Database.Base;
 
 namespace RegistrantApp.Server.Database;
 
-public class LiteContext : DbSetTables
+public class LiteContext : RaContext
 {
     private readonly IConfiguration _config;
 

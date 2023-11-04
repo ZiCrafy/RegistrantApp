@@ -1,6 +1,7 @@
 ﻿using Mapster;
 using Microsoft.EntityFrameworkCore;
 using RegistrantApp.Server.Database;
+using RegistrantApp.Server.Database.Base;
 using RegistrantApp.Shared.Database;
 using RegistrantApp.Shared.Dto.Accounts;
 using RegistrantApp.Shared.PresentationLayer.Accounts;
@@ -9,9 +10,9 @@ namespace RegistrantApp.Server.BusinessLogicLayer;
 
 public class AccountAdapter
 {
-    private readonly LiteContext _ef;
+    private readonly RaContext _ef;
 
-    public AccountAdapter(LiteContext ef) =>
+    public AccountAdapter(RaContext ef) =>
         _ef = ef;
 
     public async Task<ViewAccount> Get(long idAccount)

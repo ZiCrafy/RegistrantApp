@@ -2,9 +2,9 @@
 using RegistrantApp.Shared.Database;
 using File = RegistrantApp.Shared.Database.File;
 
-namespace RegistrantApp.Server.Database.Models;
+namespace RegistrantApp.Server.Database.Base;
 
-public class DbSetTables : DbContext
+public class RaContext : DbContext
 {
     public DbSet<Account> Accounts { get; set; }
     public DbSet<Auto> Autos { get; set; }
