@@ -71,7 +71,7 @@ public class AccountAdapter : BaseAdapter
     public async Task<ViewAccount> Add(dtoAccountCreate dto)
     {
         var account = new Account();
-        account.Adapt(dto);
+        dto.Adapt(account);
 
         await _ef.AddAsync(account);
         await _ef.SaveChangesAsync();
@@ -83,7 +83,10 @@ public class AccountAdapter : BaseAdapter
         var found = await _ef.Accounts
             .FirstOrDefaultAsync(account => account.AccountID == dto.AccountID);
 
-        found.Adapt(dto);
+        dto.Adapt(found);
+
+        if (dto.Password is not null)
+            found!.Password = dto.Password;
 
         _ef.Update(found!);
         await _ef.SaveChangesAsync();

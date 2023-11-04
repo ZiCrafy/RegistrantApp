@@ -1,4 +1,5 @@
-﻿using Mapster;
+﻿using System.Data;
+using Mapster;
 using Microsoft.EntityFrameworkCore;
 using RegistrantApp.Server.BLL.Base;
 using RegistrantApp.Server.Database.Base;
@@ -42,6 +43,7 @@ public class AutoAdapter : BaseAdapter
 
         if (dto.OwnerAutoId is not 0)
             found!.OwnerAuto = await _ef.Accounts.FirstOrDefaultAsync(account => account.AccountID == dto.OwnerAutoId);
+        
 
         _ef.Update(found);
         await _ef.SaveChangesAsync();
