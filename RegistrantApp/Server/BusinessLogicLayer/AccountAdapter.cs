@@ -14,18 +14,58 @@ public class AccountAdapter
     public AccountAdapter(LiteContext ef) =>
         _ef = ef;
 
-
     public async Task<ViewAccount> Get(long idAccount)
     {
-        // process
-        return new ViewAccount();
+        var found = await _ef.Accounts
+            .FirstOrDefaultAsync(account => account.AccountID == idAccount);
+
+        return found.Adapt<ViewAccount>();
     }
 
-    public async Task<ViewAccount> Get(int index, int recordsByPage, bool showEmployee,
+    public async Task<ViewAccountPagination> Get(int index, int recordsByPage, bool showEmployee,
         bool showDeleted, string search = "")
     {
-        // process
-        return new ViewAccount();
+        var totalRecords = _ef.Accounts.Count(account =>
+            account.IsDeleted == showDeleted && account.IsEmployee == showEmployee);
+
+        var data = _ef.Accounts
+            .Where(account => account.IsDeleted == showDeleted && account.IsEmployee == showEmployee)
+            .Skip(recordsByPage * index)
+            .Take(recordsByPage)
+            .ToList()
+            .Adapt<ICollection<ViewAccount>>();
+
+        var pagination = new ViewAccountPagination()
+        {
+            TotalRecords = totalRecords,
+            TotalPages = totalRecords / recordsByPage,
+            Accounts = data
+        };
+
+        return pagination;
+    }
+
+    public async Task<ViewAccountPagination> Get(int index, int recordsByPage, bool showEmployee,
+        bool showDeleted)
+    {
+        var totalRecords = _ef.Accounts.Count(account =>
+            account.IsDeleted == showDeleted && account.IsEmployee == showEmployee);
+
+        var data = _ef.Accounts
+            .Where(account => account.IsDeleted == showDeleted && account.IsEmployee == showEmployee)
+            .Skip(recordsByPage * index)
+            .Take(recordsByPage)
+            .ToList()
+            .Adapt<ICollection<ViewAccount>>();
+
+        var pagination = new ViewAccountPagination()
+        {
+            TotalRecords = totalRecords,
+            TotalPages = totalRecords / recordsByPage,
+            Accounts = data
+        };
+
+        return pagination;
     }
 
     public async Task<ViewAccount> Add(dtoAccountCreate dto)
@@ -42,12 +82,12 @@ public class AccountAdapter
     {
         var found = await _ef.Accounts
             .FirstOrDefaultAsync(account => account.AccountID == dto.AccountID);
-       
+
         found.Adapt(dto);
-        
+
         _ef.Update(found!);
         await _ef.SaveChangesAsync();
-        
+
         return found.Adapt<ViewAccount>();
     }
 

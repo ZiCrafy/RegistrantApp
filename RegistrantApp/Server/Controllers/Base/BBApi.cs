@@ -17,6 +17,7 @@ public class BBApi : ControllerBase
     }
 
 
+    [NonAction]
     public bool ValidateToken(string tokenID, out Token token)
     {
         token = _ef.Tokens

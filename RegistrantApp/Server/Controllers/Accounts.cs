@@ -22,12 +22,12 @@ public class Accounts : BBApi
     {
         if (!ValidateToken(token, out var session))
             return StatusCode(401);
-        
+
         var view = await _adapter.Get(accountId);
 
         return StatusCode(200, view);
     }
-    
+
     [HttpGet("Get")]
     public async Task<IActionResult> Get([FromHeader] string token, int index, int recordsByPage, bool showEmployee,
         bool showDeleted, string search = "")
@@ -35,11 +35,11 @@ public class Accounts : BBApi
         if (!ValidateToken(token, out var session))
             return StatusCode(401);
         
-        var view = await _adapter.Get(index, recordsByPage, showEmployee, showDeleted, search);
-
-        return StatusCode(200, view);
+        return string.IsNullOrEmpty(search)
+            ? StatusCode(200, await _adapter.Get(index, recordsByPage, showEmployee, showDeleted))
+            : StatusCode(200, await _adapter.Get(index, recordsByPage, showEmployee, showDeleted, search));
     }
-    
+
     [HttpPost("Create")]
     public async Task<IActionResult> Create([FromHeader] string token, [FromBody] dtoAccountCreate dto)
     {
@@ -66,7 +66,7 @@ public class Accounts : BBApi
     {
         if (!ValidateToken(token, out var session))
             return StatusCode(401);
-        
+
         await _adapter.Delete(idsAccount);
         return StatusCode(200);
     }
