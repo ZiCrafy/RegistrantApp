@@ -2,8 +2,10 @@
 using RegistrantApp.Shared.Database;
 using RegistrantApp.Shared.Dto.Accounts;
 using RegistrantApp.Shared.Dto.Auto;
+using RegistrantApp.Shared.Dto.Contragents;
 using RegistrantApp.Shared.Dto.Security;
 using RegistrantApp.Shared.PresentationLayer.Accounts;
+using RegistrantApp.Shared.PresentationLayer.Contragents;
 using RegistrantApp.Shared.PresentationLayer.Security;
 
 namespace RegistrantApp.Server.Properties;
@@ -49,6 +51,17 @@ public class ConfigAdapter : IRegister
         config.NewConfig<Auto, dtoAutoUpdate>()
             .Map(z => z.Title, x => x.Title)
             .Map(z => z.AutoNumber, x => x.Title);
+
+        config.NewConfig<Contragent, dtoContragentCreate>()
+            .Map(z => z.Title, x => x.Title);
+        
+        config.NewConfig<Contragent, dtoContragentUpdate>()
+            .Map(z => z.Title, x => x.Title);
+
+        config.NewConfig<Contragent, ViewContragent>()
+            .Map(z => z.Title, x => x.Title)
+            .Map(z=> z.ContragentID, x=> x.ContragentID);
+
 
     }
 }
