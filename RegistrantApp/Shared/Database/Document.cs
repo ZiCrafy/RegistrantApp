@@ -9,6 +9,5 @@ public class Document
     public string? Seria { get; set; }
     public string? Number { get; set; }
     public string? Authority { get; set; }
-    public DateOnly DateOfШssue { get; set; }
-    public ICollection<File> Files { get; set; }
+    public DateOnly DateOfIssue { get; set; }
 }
