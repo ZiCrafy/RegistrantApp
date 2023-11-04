@@ -2,6 +2,7 @@
 using RegistrantApp.Server.BusinessLogicLayer;
 using RegistrantApp.Server.Controllers.Base;
 using RegistrantApp.Server.Database;
+using RegistrantApp.Server.Database.Base;
 using RegistrantApp.Shared.Dto.Accounts;
 
 namespace RegistrantApp.Server.Controllers;
@@ -12,7 +13,7 @@ public class Accounts : BBApi
 {
     private readonly AccountAdapter _adapter;
 
-    public Accounts(LiteContext ef, IConfiguration config) : base(ef, config)
+    public Accounts(RaContext ef, IConfiguration config) : base(ef, config)
     {
         _adapter = new AccountAdapter(ef);
     }

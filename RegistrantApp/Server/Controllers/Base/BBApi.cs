@@ -19,7 +19,7 @@ public class BBApi : ControllerBase
 
 
     [NonAction]
-    public bool ValidateToken(string tokenID, out Token token)
+    protected bool ValidateToken(string tokenID, out Token token)
     {
         token = _ef.Tokens
             .Include(entity => entity.OwnerToken)
@@ -27,4 +27,8 @@ public class BBApi : ControllerBase
         
         return token != null!;
     }
+
+ 
+    
+    
 }

@@ -1,21 +1,20 @@
 ﻿using Mapster;
 using Microsoft.EntityFrameworkCore;
+using RegistrantApp.Server.BusinessLogicLayer.Base;
 using RegistrantApp.Server.Database.Base;
 using RegistrantApp.Shared.Database;
-using RegistrantApp.Shared.Dto.Accounts;
 using RegistrantApp.Shared.Dto.Security;
 using RegistrantApp.Shared.PresentationLayer.Security;
 
-namespace RegistrantApp.Server.BusinessLogicLayer.Security;
+namespace RegistrantApp.Server.BusinessLogicLayer;
 
-public class SecurityAdapter
+public class SecurityAdapter : BaseAdapter
 {
-    private readonly RaContext _ef;
-
-    public SecurityAdapter(RaContext ef)
-        => _ef = ef;
-
-    public async Task<AccessToken> CreateSession(dtoCredentials dto)
+    public SecurityAdapter(RaContext ef) : base(ef)
+    {
+    }
+    
+    public async Task<AccessToken?> CreateSession(dtoCredentials dto)
     {
         var foundAccount = await _ef.Accounts
             .FirstOrDefaultAsync(account => account.PhoneNumber.ToString() == dto.Login
@@ -26,7 +25,9 @@ public class SecurityAdapter
 
         var token = new Token()
         {
-            TokenID = $"{Guid.NewGuid()} {Guid.NewGuid()}".Replace("-", string.Empty),
+            TokenID = $"{Guid.NewGuid()} {Guid.NewGuid()}"
+                .Replace("-", string.Empty)
+                .Replace(" ", string.Empty),
             DateTimeSessionStarted = DateTime.Now,
             DateTimeSessionExpired = DateTime.Now.AddHours(10),
             OwnerToken = foundAccount,
@@ -40,18 +41,24 @@ public class SecurityAdapter
         return token.Adapt<AccessToken>();
     }
 
-    public async Task<bool> EndSession(dtoAccessTokenFinished dto)
+    public async Task<AccessToken?> EndSession(dtoAccessTokenFinished dto)
     {
-        var foundSession = await _ef.Tokens.FirstOrDefaultAsync(session =>
+        var foundSession = await _ef.Tokens
+            .FirstOrDefaultAsync(session =>
             session.TokenID == dto.Token && session.DateTimeSessionExpired >= DateTime.Now);
 
         if (foundSession == null)
-            return false;
+            return null;
 
         foundSession.DateTimeSessionExpired = DateTime.Now;
 
         _ef.Update(foundSession);
         await _ef.SaveChangesAsync();
-        return true;
+        return foundSession.Adapt<AccessToken>();
+    }
+
+    public async Task<object?> ChangePassword(dtoChangeCredentialPassword dto)
+    {
+        throw new NotImplementedException();
     }
 }
