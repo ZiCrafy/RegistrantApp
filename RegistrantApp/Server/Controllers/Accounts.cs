@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using RegistrantApp.Server.BusinessLogicLayer;
+using RegistrantApp.Server.BLL;
 using RegistrantApp.Server.Controllers.Base;
-using RegistrantApp.Server.Database;
 using RegistrantApp.Server.Database.Base;
 using RegistrantApp.Shared.Dto.Accounts;
 

@@ -1,7 +1,7 @@
 ﻿using RegistrantApp.Server.Database.Base;
 using RegistrantApp.Shared.Database;
 
-namespace RegistrantApp.Server.BusinessLogicLayer.Base;
+namespace RegistrantApp.Server.BLL.Base;
 
 public class BaseAdapter
 {

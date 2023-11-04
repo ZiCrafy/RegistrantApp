@@ -1,11 +1,10 @@
 ﻿using System.Globalization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using RegistrantApp.Server.BusinessLogicLayer;
+using RegistrantApp.Server.BLL;
 using RegistrantApp.Server.Controllers.Base;
 using RegistrantApp.Server.Database.Base;
 using RegistrantApp.Shared.Dto.Security;
-using RegistrantApp.Shared.PresentationLayer.Security;
 
 namespace RegistrantApp.Server.Controllers;
 

@@ -1,12 +1,12 @@
 ﻿using Mapster;
 using Microsoft.EntityFrameworkCore;
-using RegistrantApp.Server.BusinessLogicLayer.Base;
+using RegistrantApp.Server.BLL.Base;
 using RegistrantApp.Server.Database.Base;
 using RegistrantApp.Shared.Database;
 using RegistrantApp.Shared.Dto.Accounts;
 using RegistrantApp.Shared.PresentationLayer.Accounts;
 
-namespace RegistrantApp.Server.BusinessLogicLayer;
+namespace RegistrantApp.Server.BLL;
 
 public class AccountAdapter : BaseAdapter
 {
