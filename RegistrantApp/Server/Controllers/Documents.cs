@@ -17,7 +17,7 @@ public class Documents : BBApi
         _adapter = new DocumentAdapter(ef);
     }
 
-    [HttpGet]
+    [HttpGet("Get")]
     public async Task<IActionResult> Get([FromHeader] string token, long idAccount, bool showDeleted)
     {
         if (!ValidateToken(token, out var session))

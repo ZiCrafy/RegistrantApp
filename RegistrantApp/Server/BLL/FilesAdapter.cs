@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using RegistrantApp.Server.BLL.Base;
 using RegistrantApp.Server.Database.Base;
 using RegistrantApp.Shared.Database;
+using RegistrantApp.Shared.Dto.Files;
 using RegistrantApp.Shared.PresentationLayer.Files;
 using File = RegistrantApp.Shared.Database.File;
 
@@ -52,7 +53,7 @@ public class FilesAdapter : BaseAdapter
         return file;
     }
 
-    public async Task<ViewFile> Upload(IFormFile file)
+    public async Task<ViewFile> Upload(dtoFileUpload dto, IFormFile file)
     {
         File newFile;
 
@@ -67,10 +68,18 @@ public class FilesAdapter : BaseAdapter
             };
 
             var s = await fileStream.ReadAsync(newFile.Bytes, 0, (int)file.Length);
-
-            await _ef.AddAsync(newFile);
-            await _ef.SaveChangesAsync();
         }
+
+        newFile.Order = string.IsNullOrEmpty(dto.IdOrder.ToString())
+            ? await _ef.Orders.FirstOrDefaultAsync(o => o.OrderID == dto.IdOrder)
+            : null;
+        
+        newFile.Document = string.IsNullOrEmpty(dto.IdDocument.ToString())
+            ? await _ef.Documents.FirstOrDefaultAsync(o => o.DocumentID == dto.IdDocument)
+            : null;      
+        
+        await _ef.AddAsync(newFile);
+        await _ef.SaveChangesAsync();
 
         return newFile.Adapt<ViewFile>();
     }
