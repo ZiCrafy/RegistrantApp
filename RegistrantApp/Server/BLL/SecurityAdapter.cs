@@ -13,7 +13,7 @@ public class SecurityAdapter : BaseAdapter
     public SecurityAdapter(RaContext ef) : base(ef)
     {
     }
-    
+
     public async Task<AccessToken?> CreateSession(dtoCredentials dto)
     {
         var foundAccount = await _ef.Accounts
@@ -45,7 +45,7 @@ public class SecurityAdapter : BaseAdapter
     {
         var foundSession = await _ef.Tokens
             .FirstOrDefaultAsync(session =>
-            session.TokenID == dto.Token && session.DateTimeSessionExpired >= DateTime.Now);
+                session.TokenID == dto.Token && session.DateTimeSessionExpired >= DateTime.Now);
 
         if (foundSession == null)
             return null;
@@ -57,8 +57,20 @@ public class SecurityAdapter : BaseAdapter
         return foundSession.Adapt<AccessToken>();
     }
 
-    public async Task<object?> ChangePassword(dtoChangeCredentialPassword dto)
+    public async Task<string?> ChangePassword(long idAccount, dtoChangeCredentialPassword dto)
     {
-        throw new NotImplementedException();
+        var foundAccount = await _ef.Accounts
+            .FirstOrDefaultAsync(account => account.AccountID == idAccount
+                                            && account.Password == dto.OldPassword);
+
+        if (foundAccount == null)
+            return "Аккаунт не найден или старый праоль не совпадает";
+
+        foundAccount.Password = dto.NewPassoword;
+
+        _ef.Update(foundAccount);
+        await _ef.SaveChangesAsync();
+
+        return "Пароль изменен";
     }
 }

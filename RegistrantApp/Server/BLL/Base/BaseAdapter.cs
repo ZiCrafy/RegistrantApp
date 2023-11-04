@@ -7,7 +7,7 @@ public class BaseAdapter
 {
     protected readonly RaContext _ef;
 
-    public BaseAdapter(RaContext ef)
+    protected BaseAdapter(RaContext ef)
         => _ef = ef;
 
     protected async void RegisterEvent(Account account, string obj, string? action, string? property,

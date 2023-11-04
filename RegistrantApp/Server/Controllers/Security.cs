@@ -23,11 +23,7 @@ public class Security : BBApi
     public async Task<IActionResult> CreateSession([FromBody] dtoCredentials dto)
     {
         var view = await _adapter.CreateSession(dto);
-
-        var account = await _ef.Tokens
-            .Include(x => x.OwnerToken)
-            .FirstOrDefaultAsync(x => x.TokenID == view!.Token);
-
+        
         return view != null ? StatusCode(200, view) : StatusCode(401, "Auth Failed");
     }
 
@@ -36,17 +32,16 @@ public class Security : BBApi
     {
         var view = await _adapter.EndSession(dto);
         
-        var account = await _ef.Tokens
-            .Include(x => x.OwnerToken)
-            .FirstOrDefaultAsync(x => x.TokenID == view!.Token);
-        
         return view != null ? StatusCode(200, view) : StatusCode(404, "Not Found!");
     }
 
     [HttpPut("ChangePassword")]
-    public async Task<IActionResult> ChangePassword([FromBody] dtoChangeCredentialPassword dto)
+    public async Task<IActionResult> ChangePassword([FromHeader] string token, [FromBody] dtoChangeCredentialPassword dto)
     {
-        var view = await _adapter.ChangePassword(dto);
+        if (!ValidateToken(token, out var session))
+            return StatusCode(401);
+        
+        var view = await _adapter.ChangePassword(session.OwnerToken.AccountID, dto);
 
         return view != null ? StatusCode(200, view) : StatusCode(404, "Not Found!");
     }
