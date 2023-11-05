@@ -29,6 +29,8 @@ public class ContragentsAdapter : BaseAdapter
                 contragent.IsDeleted == showDeleted
             )
             .OrderBy(contragent => contragent.Title)
+            .Skip(index * recordsByPage)
+            .Take(recordsByPage)
             .ToList()
             .Adapt<List<ViewContragent>>();
 
@@ -51,11 +53,13 @@ public class ContragentsAdapter : BaseAdapter
                 contragent.IsDeleted == showDeleted
         );
 
-        var conragents = _ef.Contragents
+        var contragent = _ef.Contragents
             .Where(contragent =>
                 contragent.IsDeleted == showDeleted
             )
             .OrderBy(contragent => contragent.Title)
+            .Skip(index * recordsByPage)
+            .Take(recordsByPage)
             .ToList()
             .Adapt<List<ViewContragent>>();
 
@@ -64,7 +68,7 @@ public class ContragentsAdapter : BaseAdapter
             TotalRecords = totalRecords,
             TotalPages = totalRecords / recordsByPage,
             PageIndex = index,
-            Contragents = conragents
+            Contragents = contragent
         };
 
         return pagination;

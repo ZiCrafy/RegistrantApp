@@ -47,7 +47,7 @@ public class Files : BBApi
 
         var view = await _adapter.Download(idFile);
 
-        return StatusCode(200, view);
+        return view;
     }
 
     [HttpPost("Upload")]

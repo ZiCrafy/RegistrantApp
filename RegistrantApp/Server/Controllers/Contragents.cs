@@ -17,7 +17,7 @@ public class Contragents : BBApi
     }
 
     [HttpGet("Get")]
-    public async Task<IActionResult> Get([FromHeader] string token, int index, int recordsByPage, bool showEmployee,
+    public async Task<IActionResult> Get([FromHeader] string token, int index, int recordsByPage,
         bool showDeleted, string search = "")
     {
         if (!ValidateToken(token, out var session))

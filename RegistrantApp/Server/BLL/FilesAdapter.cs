@@ -40,7 +40,7 @@ public class FilesAdapter : BaseAdapter
     public async Task<FileContentResult?> Download(string idFile)
     {
         var document = await _ef.Files
-            .FirstOrDefaultAsync(file => file.FileID.ToString() == idFile);
+            .FirstOrDefaultAsync(file => file.FileID.ToString() == idFile.ToUpper());
 
         if (document == null)
             return null;
@@ -84,12 +84,12 @@ public class FilesAdapter : BaseAdapter
             return null;
         
         foundFile.Order = string.IsNullOrEmpty(dto.IdOrder.ToString())
-            ? await _ef.Orders.FirstOrDefaultAsync(o => o.OrderID == dto.IdOrder)
-            : null;
+            ? null
+            : await _ef.Orders.FirstOrDefaultAsync(o => o.OrderID == dto.IdOrder);
         
         foundFile.Document = string.IsNullOrEmpty(dto.IdDocument.ToString())
-            ? await _ef.Documents.FirstOrDefaultAsync(o => o.DocumentID == dto.IdDocument)
-            : null;
+            ? null
+            : await _ef.Documents.FirstOrDefaultAsync(o => o.DocumentID == dto.IdDocument);
 
         _ef.Update(foundFile);
         await _ef.SaveChangesAsync();
