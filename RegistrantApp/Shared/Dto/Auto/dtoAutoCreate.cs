@@ -2,7 +2,19 @@
 
 public class dtoAutoCreate
 {
-    public string Title { get; set; }
-    public string AutoNumber { get; set; }
+    private string title;
+
+    public string Title
+    {
+        get => title.ToUpper();
+        set => title = value.ToUpper();
+    }
+
+    private string autoNumber;
+    public string AutoNumber
+    {
+        get => autoNumber.ToUpper();
+        set => autoNumber = value.ToUpper();
+    }
     public long OwnerAutoId { get; set; }
 }
