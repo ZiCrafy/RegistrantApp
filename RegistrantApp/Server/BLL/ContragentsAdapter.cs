@@ -14,10 +14,60 @@ public class ContragentsAdapter : BaseAdapter
     {
     }
 
-    public async Task<ICollection<ViewContragent>> Get(int index, int recordsByPage,
+    public async Task<ViewContragentPagination> Get(int index, int recordsByPage,
         bool showDeleted, string search = "")
     {
-        return new List<ViewContragent>();
+        var totalRecords = _ef.Contragents.Count(
+            contragent =>
+                contragent.Title.ToUpper().Contains(search.ToUpper()) &&
+                contragent.IsDeleted == showDeleted
+        );
+
+        var conragents = _ef.Contragents
+            .Where(contragent =>
+                contragent.Title.ToUpper().Contains(search) &&
+                contragent.IsDeleted == showDeleted
+            )
+            .OrderBy(contragent => contragent.Title)
+            .ToList()
+            .Adapt<List<ViewContragent>>();
+
+        var pagination = new ViewContragentPagination()
+        {
+            TotalRecords = totalRecords,
+            TotalPages = totalRecords / recordsByPage,
+            PageIndex = index,
+            Contragents = conragents
+        };
+
+        return pagination;
+    }
+
+    public async Task<ViewContragentPagination> Get(int index, int recordsByPage,
+        bool showDeleted)
+    {
+        var totalRecords = _ef.Contragents.Count(
+            contragent =>
+                contragent.IsDeleted == showDeleted
+        );
+
+        var conragents = _ef.Contragents
+            .Where(contragent =>
+                contragent.IsDeleted == showDeleted
+            )
+            .OrderBy(contragent => contragent.Title)
+            .ToList()
+            .Adapt<List<ViewContragent>>();
+
+        var pagination = new ViewContragentPagination()
+        {
+            TotalRecords = totalRecords,
+            TotalPages = totalRecords / recordsByPage,
+            PageIndex = index,
+            Contragents = conragents
+        };
+
+        return pagination;
     }
 
     public async Task<ViewContragent> Create(dtoContragentCreate dto)
@@ -52,15 +102,13 @@ public class ContragentsAdapter : BaseAdapter
         {
             var foundContragent =
                 await _ef.Contragents.FirstOrDefaultAsync(contragent => contragent.ContragentID == item);
-            
-            if(foundContragent == null)
+
+            if (foundContragent == null)
                 continue;
 
             foundContragent.IsDeleted = true;
             _ef.Update(foundContragent);
             await _ef.SaveChangesAsync();
         }
-        
-    } 
-    
+    }
 }

@@ -13,7 +13,7 @@ public class AccountAdapter : BaseAdapter
     public AccountAdapter(RaContext ef) : base(ef)
     {
     }
-    
+
     public async Task<ViewAccount> Get(long idAccount)
     {
         var found = await _ef.Accounts
@@ -23,13 +23,20 @@ public class AccountAdapter : BaseAdapter
     }
 
     public async Task<ViewAccountPagination> Get(int index, int recordsByPage, bool showEmployee,
-        bool showDeleted, string search = "")
+        bool showDeleted, string search)
     {
         var totalRecords = _ef.Accounts.Count(account =>
+            (account.FirstName.ToUpper().Contains(search.ToUpper()) ||
+             account.LastName!.ToUpper().Contains(search.ToUpper()) ||
+             account.MiddleName.ToUpper().Contains(search.ToUpper())) &&
             account.IsDeleted == showDeleted && account.IsEmployee == showEmployee);
 
         var data = _ef.Accounts
-            .Where(account => account.IsDeleted == showDeleted && account.IsEmployee == showEmployee)
+            .Where(account =>
+                (account.FirstName.ToUpper().Contains(search.ToUpper()) ||
+                 account.LastName!.ToUpper().Contains(search.ToUpper()) ||
+                 account.MiddleName.ToUpper().Contains(search.ToUpper())) &&
+                account.IsDeleted == showDeleted && account.IsEmployee == showEmployee)
             .Skip(recordsByPage * index)
             .Take(recordsByPage)
             .ToList()
@@ -110,5 +117,4 @@ public class AccountAdapter : BaseAdapter
 
         await _ef.SaveChangesAsync();
     }
-    
 }
