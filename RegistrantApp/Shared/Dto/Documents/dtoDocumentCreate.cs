@@ -7,4 +7,6 @@ public class dtoDocumentCreate
     public string? Number { get; set; }
     public string? Authority { get; set; }
     public DateOnly DateOfIssue { get; set; }
+    
+    public long idAccount { get; set; }
 }

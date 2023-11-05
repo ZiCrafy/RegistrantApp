@@ -30,6 +30,8 @@ public class DocumentAdapter : BaseAdapter
         var document = new Document();
         dto.Adapt(document);
 
+        document.Account = await _ef.Accounts.FirstOrDefaultAsync(account => account.AccountID == dto.idAccount);
+        
         await _ef.AddAsync(document);
         await _ef.SaveChangesAsync();
 
