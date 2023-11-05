@@ -4,5 +4,5 @@ namespace RegistrantApp.Shared.PresentationLayer.Accounts;
 
 public class ViewAccountPagination : PaginationBase
 {
-    public ICollection<ViewAccount> Accounts = new List<ViewAccount>();
+    public ICollection<ViewAccount> Accounts { get; set; } = new List<ViewAccount>();
 }
