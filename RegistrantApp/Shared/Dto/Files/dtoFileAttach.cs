@@ -2,7 +2,12 @@
 
 public class dtoFileAttach
 {
-    public string IdFile { get; set; }
+    private string idFile;
+    public string IdFile
+    {
+        get => idFile.ToUpper();
+        set => idFile= value.ToUpper();
+    }
     public long? IdOrder { get; set; }
     public long? IdDocument { get; set; }
 }

@@ -2,7 +2,12 @@
 
 public class ViewFile
 {
-    public Guid FileID { get; set; }
+    private string fileId;
+    public string FileID
+    {
+        get => fileId.ToUpper();
+        set => fileId= value.ToUpper();
+    }
     public string FileName { get; set; }
     public DateTime DateTimeUpload { get; set; }
 }
