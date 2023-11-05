@@ -37,6 +37,7 @@ public class AccountAdapter : BaseAdapter
                  account.LastName!.ToUpper().Contains(search.ToUpper()) ||
                  account.MiddleName.ToUpper().Contains(search.ToUpper())) &&
                 account.IsDeleted == showDeleted && account.IsEmployee == showEmployee)
+            .OrderBy(account=> account.FirstName)
             .Skip(recordsByPage * index)
             .Take(recordsByPage)
             .ToList()
@@ -60,6 +61,7 @@ public class AccountAdapter : BaseAdapter
 
         var data = _ef.Accounts
             .Where(account => account.IsDeleted == showDeleted && account.IsEmployee == showEmployee)
+            .OrderBy(account=> account.FirstName)
             .Skip(recordsByPage * index)
             .Take(recordsByPage)
             .ToList()
