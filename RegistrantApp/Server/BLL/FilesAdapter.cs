@@ -53,7 +53,7 @@ public class FilesAdapter : BaseAdapter
         return file;
     }
 
-    public async Task<ViewFile> Upload(dtoFileUpload dto, IFormFile file)
+    public async Task<ViewFile> Upload(IFormFile file)
     {
         File newFile;
 
@@ -69,18 +69,30 @@ public class FilesAdapter : BaseAdapter
 
             var s = await fileStream.ReadAsync(newFile.Bytes, 0, (int)file.Length);
         }
-
-        newFile.Order = string.IsNullOrEmpty(dto.IdOrder.ToString())
-            ? await _ef.Orders.FirstOrDefaultAsync(o => o.OrderID == dto.IdOrder)
-            : null;
-        
-        newFile.Document = string.IsNullOrEmpty(dto.IdDocument.ToString())
-            ? await _ef.Documents.FirstOrDefaultAsync(o => o.DocumentID == dto.IdDocument)
-            : null;      
         
         await _ef.AddAsync(newFile);
         await _ef.SaveChangesAsync();
 
         return newFile.Adapt<ViewFile>();
+    }
+
+    public async Task<ViewFile?> AttachFile(dtoFileAttach dto)
+    {
+        var foundFile = await _ef.Files.FirstOrDefaultAsync(file => file.FileID.ToString() == dto.IdFile);
+        
+        if (foundFile == null)
+            return null;
+        
+        foundFile.Order = string.IsNullOrEmpty(dto.IdOrder.ToString())
+            ? await _ef.Orders.FirstOrDefaultAsync(o => o.OrderID == dto.IdOrder)
+            : null;
+        
+        foundFile.Document = string.IsNullOrEmpty(dto.IdDocument.ToString())
+            ? await _ef.Documents.FirstOrDefaultAsync(o => o.DocumentID == dto.IdDocument)
+            : null;
+
+        _ef.Update(foundFile);
+        await _ef.SaveChangesAsync();
+        return foundFile.Adapt<ViewFile>();
     }
 }

@@ -51,12 +51,24 @@ public class Files : BBApi
     }
 
     [HttpPost("Upload")]
-    public async Task<IActionResult> Download([FromHeader] string token, dtoFileUpload dto, IFormFile form)
+    public async Task<IActionResult> Download([FromHeader] string token, IFormFile form)
     {
         if (!ValidateToken(token, out var session))
             return StatusCode(401);
 
-        var view = await _adapter.Upload(dto, form);
+        var view = await _adapter.Upload(form);
+
+        return StatusCode(200, view);
+    }
+
+
+    [HttpPut("AttachFile")]
+    public async Task<IActionResult> AttachFile([FromHeader] string token, dtoFileAttach dto)
+    {
+        if (!ValidateToken(token, out var session))
+            return StatusCode(401);
+
+        var view = await _adapter.AttachFile(dto);
 
         return StatusCode(200, view);
     }
