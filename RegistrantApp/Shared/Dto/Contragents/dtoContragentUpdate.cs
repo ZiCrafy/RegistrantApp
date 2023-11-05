@@ -3,5 +3,11 @@
 public class dtoContragentUpdate
 {
     public long ContragentID { get; set; }
-    public string Title { get; set; }
+    private string title;
+
+    public string Title
+    {
+        get => title.ToUpper();
+        set => title = value.ToUpper();
+    }
 }
