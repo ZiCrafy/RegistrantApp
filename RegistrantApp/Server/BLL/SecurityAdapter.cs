@@ -66,7 +66,7 @@ public class SecurityAdapter : BaseAdapter
         if (foundAccount == null)
             return "Аккаунт не найден или старый праоль не совпадает";
 
-        foundAccount.Password = dto.NewPassoword;
+        foundAccount.Password = dto.NewPassword;
 
         _ef.Update(foundAccount);
         await _ef.SaveChangesAsync();
