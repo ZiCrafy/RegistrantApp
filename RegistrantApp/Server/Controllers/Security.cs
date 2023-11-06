@@ -12,9 +12,9 @@ public class Security : BBApi
 {
     private readonly SecurityAdapter _adapter;
 
-    public Security(RaContext ef, IConfiguration config) : base(ef, config)
+    public Security(RaContext ef, IConfiguration config, SecurityAdapter adapter) : base(ef, config)
     {
-        _adapter = new SecurityAdapter(_ef);
+        _adapter = adapter;
     }
 
     [HttpPost("CreateSession")]

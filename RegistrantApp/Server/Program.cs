@@ -1,6 +1,7 @@
 using System.Reflection;
 using Mapster;
 using MapsterMapper;
+using RegistrantApp.Server.BLL;
 using RegistrantApp.Server.Database;
 using RegistrantApp.Server.Database.Base;
 
@@ -13,6 +14,15 @@ builder.Services.AddRazorPages();
 builder.Services.AddDbContext<RaContext, LiteContext>();
 builder.Services.AddSwaggerGen();
 builder.Services.AddMapster();
+
+
+/* Config adapters with controllers */
+builder.Services.AddScoped<SecurityAdapter>();
+builder.Services.AddScoped<AccountAdapter>();
+builder.Services.AddScoped<AutoAdapter>();
+builder.Services.AddScoped<ContragentsAdapter>();
+builder.Services.AddScoped<DocumentAdapter>();
+builder.Services.AddScoped<FilesAdapter>();
 
 builder.Configuration.AddJsonFile("Properties\\options.json")
     .AddJsonFile("Properties\\message.json");
