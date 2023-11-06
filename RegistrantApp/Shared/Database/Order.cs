@@ -14,8 +14,6 @@ public class Order
     public DateTime? DateTimeStartOrder { get; set; }
     public DateTime? DateTimeEndOrder { get; set; }
     public DateTime? DateTimeLeft { get; set; }
-    public DateTime DateTimeCreated { get; set; }
-    public DateTime DateTimeLastUsed { get; set; }
     public OrderDetail OrderDetail { get; set; }
     public bool IsDeleted { get; set; }
 }
