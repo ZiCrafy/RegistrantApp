@@ -4,11 +4,13 @@ using RegistrantApp.Shared.Dto.Accounts;
 using RegistrantApp.Shared.Dto.Auto;
 using RegistrantApp.Shared.Dto.Contragents;
 using RegistrantApp.Shared.Dto.Documents;
+using RegistrantApp.Shared.Dto.Orders;
 using RegistrantApp.Shared.Dto.Security;
 using RegistrantApp.Shared.PresentationLayer.Accounts;
 using RegistrantApp.Shared.PresentationLayer.Contragents;
 using RegistrantApp.Shared.PresentationLayer.Documents;
 using RegistrantApp.Shared.PresentationLayer.Files;
+using RegistrantApp.Shared.PresentationLayer.Orders;
 using RegistrantApp.Shared.PresentationLayer.Security;
 using File = RegistrantApp.Shared.Database.File;
 
@@ -95,5 +97,21 @@ public class ConfigAdapter : IRegister
             .Map(z => z.DateTimeUpload, x => x.DateTimeUpload)
             .Map(z => z.FileID, x => x.FileID);
 
+
+        config.NewConfig<Order, dtoOrderCreate>()
+            .Map(z => z.DateTimePlannedArrive, x => x.DateTimePlannedArrive);
+
+        config.NewConfig<Order, ViewOrder>()
+            .Map(z => z.AutoNumber, x => x.Auto!.AutoNumber)
+            .Map(z => z.AutoTitle, x => x.Auto!.Title)
+            .Map(z => z.AccountFirstName, x => x.Account!.FirstName)
+            .Map(z => z.AccountLastName, x => x.Account!.LastName)
+            .Map(z => z.AccountMiddleName, x => x.Account!.MiddleName)
+            .Map(z => z.DateTimePlannedArrive, x => x.DateTimePlannedArrive)
+            .Map(z => z.DateTimeArrived, x => x.DateTimeArrived)
+            .Map(z => z.DateTimeLeft, x => x.DateTimeLeft)
+            .Map(z => z.DateTimeRegistration, x => x.DateTimeRegistration)
+            .Map(z => z.DateTimeEndOrder, x => x.DateTimeEndOrder)
+            .Map(z => z.DateTimeStartOrder, x => x.DateTimeStartOrder);
     }
 }

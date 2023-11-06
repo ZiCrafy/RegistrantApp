@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using RegistrantApp.Server.BLL.Base;
 using RegistrantApp.Server.Database.Base;
+using RegistrantApp.Shared.Database;
+using RegistrantApp.Shared.Dto.Orders;
 using RegistrantApp.Shared.PresentationLayer.Orders;
 
 namespace RegistrantApp.Server.BLL;
@@ -48,7 +50,7 @@ public class OrdersAdapter : BaseAdapter
             .Take(recordsByPage)
             .ToList()
             .Adapt<List<ViewOrder>>();
-        
+
         var pagionation = new ViewOrderPagination()
         {
             TotalRecords = totalRecords,
@@ -95,5 +97,22 @@ public class OrdersAdapter : BaseAdapter
         };
 
         return pagionation;
+    }
+
+    public async Task<ViewOrder> Create(dtoOrderCreate dto)
+    {
+        var order = new Order();
+        dto.Adapt(order);
+
+        order.Contragent =
+            await _ef.Contragents.FirstOrDefaultAsync(contrant => contrant.ContragentID == dto.IdContragent);
+        order.Auto = await _ef.Autos.FirstOrDefaultAsync(auto => auto.AutoID == dto.IdAuto);
+        order.Account = await _ef.Accounts.FirstOrDefaultAsync(account => account.AccountID == dto.IdAccount);
+        order.OrderDetail = new OrderDetail();
+
+        await _ef.AddAsync(order);
+        await _ef.SaveChangesAsync();
+
+        return order.Adapt<ViewOrder>();
     }
 }
