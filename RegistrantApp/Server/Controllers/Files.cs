@@ -12,9 +12,9 @@ public class Files : BBApi
 {
     private readonly FilesAdapter _adapter;
 
-    public Files(RaContext ef, IConfiguration config) : base(ef, config)
+    public Files(RaContext ef, IConfiguration config, FilesAdapter adapter) : base(ef, config)
     {
-        _adapter = new FilesAdapter(ef);
+        _adapter = adapter;
     }
 
     [HttpGet("GetFromDocuments")]

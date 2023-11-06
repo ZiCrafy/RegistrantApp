@@ -12,9 +12,9 @@ namespace RegistrantApp.Server.Controllers;
 public class Documents : BBApi
 {
     private readonly DocumentAdapter _adapter;
-    public Documents(RaContext ef, IConfiguration config) : base(ef, config)
+    public Documents(RaContext ef, IConfiguration config, DocumentAdapter adapter) : base(ef, config)
     {
-        _adapter = new DocumentAdapter(ef);
+        _adapter = adapter;
     }
 
     [HttpGet("Get")]

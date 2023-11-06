@@ -12,9 +12,9 @@ public class Auto : BBApi
 {
     private readonly AutoAdapter _adapter;
     
-    public Auto(RaContext ef, IConfiguration config) : base(ef, config)
+    public Auto(RaContext ef, IConfiguration config, AutoAdapter adapter) : base(ef, config)
     {
-        _adapter = new AutoAdapter(ef);
+        _adapter = adapter;
     }
 
     [HttpGet("Get")]

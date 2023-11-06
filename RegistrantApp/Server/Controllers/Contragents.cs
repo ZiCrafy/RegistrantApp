@@ -11,9 +11,9 @@ namespace RegistrantApp.Server.Controllers;
 public class Contragents : BBApi
 {
     private readonly ContragentsAdapter _adapter;
-    public Contragents(RaContext ef, IConfiguration config) : base(ef, config)
+    public Contragents(RaContext ef, IConfiguration config, ContragentsAdapter adapter) : base(ef, config)
     {
-        _adapter = new ContragentsAdapter(ef);
+        _adapter = adapter;
     }
 
     [HttpGet("Get")]

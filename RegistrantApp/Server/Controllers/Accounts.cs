@@ -12,9 +12,9 @@ public class Accounts : BBApi
 {
     private readonly AccountAdapter _adapter;
 
-    public Accounts(RaContext ef, IConfiguration config) : base(ef, config)
+    public Accounts(RaContext ef, IConfiguration config, AccountAdapter adapter) : base(ef, config)
     {
-        _adapter = new AccountAdapter(ef);
+        _adapter = adapter;
     }
 
     [HttpGet("GetFromId")]
