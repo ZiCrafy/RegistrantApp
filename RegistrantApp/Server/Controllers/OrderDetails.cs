@@ -6,6 +6,8 @@ using RegistrantApp.Shared.Dto.Orders;
 
 namespace RegistrantApp.Server.Controllers;
 
+[ApiController]
+[Route("api/[controller]")]
 public class OrderDetails : BBApi
 {
     private readonly OrderDetailsAdapter _adapter;
@@ -26,6 +28,7 @@ public class OrderDetails : BBApi
         return StatusCode(200, view);
     }
 
+    [HttpPut("Update")]
     public async Task<IActionResult> Update([FromHeader] string token, dtoOrderDetailsUpdate dto)
     {
         if (!ValidateToken(token, out var session))
@@ -33,6 +36,6 @@ public class OrderDetails : BBApi
 
         var view = await _adapter.Update(dto);
         
-        return StatusCode(200);
+        return StatusCode(200, view);
     }
 }
