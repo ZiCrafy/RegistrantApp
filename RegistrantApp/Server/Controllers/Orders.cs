@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using RegistrantApp.Server.BLL;
 using RegistrantApp.Server.Controllers.Base;
 using RegistrantApp.Server.Database.Base;
@@ -51,6 +52,8 @@ public class Orders : BBApi
     {
         if (!ValidateToken(token, out var session))
             return StatusCode(401);
+
+        await _adapter.Delete(idsOrders);
         
         return StatusCode(200);
     }

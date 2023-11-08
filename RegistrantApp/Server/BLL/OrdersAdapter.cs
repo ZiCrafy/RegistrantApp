@@ -115,4 +115,22 @@ public class OrdersAdapter : BaseAdapter
 
         return order.Adapt<ViewOrder>();
     }
+
+    public async Task Delete(long[] idsOrders)
+    {
+        foreach (var item in idsOrders)
+        {
+            var found = await _ef.Orders
+                .FirstOrDefaultAsync(order => order.OrderID == item);
+            
+            if (found == null)
+                continue;
+
+            found.IsDeleted = true;
+
+            _ef.Update(found);
+        }
+        
+        await _ef.SaveChangesAsync();
+    }
 }
