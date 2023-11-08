@@ -101,6 +101,18 @@ public class ConfigAdapter : IRegister
         config.NewConfig<Order, dtoOrderCreate>()
             .Map(z => z.DateTimePlannedArrive, x => x.DateTimePlannedArrive);
 
+        config.NewConfig<Order, dtoOrderUpdate>()
+            .Map(z => z.DateTimeRegistration, x => x.DateTimeRegistration)
+            .Map(z => z.DateTimeArrived, x => x.DateTimeArrived)
+            .Map(z => z.DateTimeLeft, x => x.DateTimeLeft)
+            .Map(z => z.DateTimeEndOrder, x => x.DateTimeEndOrder)
+            .Map(z => z.DateTimePlannedArrive, x => x.DateTimePlannedArrive)
+            .Map(z => z.DateTimeStartOrder, x => x.DateTimeStartOrder)
+            .Map(z => z.IdAccount, x => x.Account!.AccountID)
+            .Map(z => z.IdContragent, x => x.Contragent!.ContragentID)
+            .Map(z => z.IdAuto, x => x.Auto!.AutoID)
+            .Map(z=> z.OrderID, x=> x.OrderID);
+        
         config.NewConfig<Order, ViewOrder>()
             .Map(z => z.AutoNumber, x => x.Auto!.AutoNumber)
             .Map(z => z.AutoTitle, x => x.Auto!.Title)

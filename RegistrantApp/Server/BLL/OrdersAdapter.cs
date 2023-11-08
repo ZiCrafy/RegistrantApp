@@ -116,6 +116,26 @@ public class OrdersAdapter : BaseAdapter
         return order.Adapt<ViewOrder>();
     }
 
+    public async Task<ViewOrder> Update(dtoOrderUpdate dto)
+    {
+
+        var foundOrder = await _ef.Orders.FirstOrDefaultAsync(order => order.OrderID == dto.OrderID);
+        if (foundOrder == null)
+            return null;
+
+        dto.Adapt(foundOrder);
+        
+        foundOrder.Contragent =
+            await _ef.Contragents.FirstOrDefaultAsync(contrant => contrant.ContragentID == dto.IdContragent);
+        foundOrder.Auto = await _ef.Autos.FirstOrDefaultAsync(auto => auto.AutoID == dto.IdAuto);
+        foundOrder.Account = await _ef.Accounts.FirstOrDefaultAsync(account => account.AccountID == dto.IdAccount);
+
+        _ef.Update(foundOrder);
+        await _ef.SaveChangesAsync();
+        
+        return foundOrder.Adapt<ViewOrder>();
+    }
+
     public async Task Delete(long[] idsOrders)
     {
         foreach (var item in idsOrders)

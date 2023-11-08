@@ -35,6 +35,7 @@ public class Orders : BBApi
             return StatusCode(401);
         
         var view = await _adapter.Create(dto);
+        
         return StatusCode(200, view);
     }
     
@@ -44,7 +45,9 @@ public class Orders : BBApi
         if (!ValidateToken(token, out var session))
             return StatusCode(401);
         
-        return StatusCode(200);
+        var view = _adapter.Update(dto);
+        
+        return StatusCode(200, view);
     }
     
     [HttpDelete("Delete")]
