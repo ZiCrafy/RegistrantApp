@@ -27,14 +27,14 @@ public class ConfigAdapter : IRegister
             .Map(z => z.PhoneNumber, x => x.PhoneNumber)
             .Map(z => z.LastName, x => x.LastName)
             .Map(z => z.MiddleName, z => z.MiddleName);
-        
+
         config.NewConfig<Account, dtoAccountUpdate>()
-            .Map(z=> z.FirstName, x=> x.FirstName)
+            .Map(z => z.FirstName, x => x.FirstName)
             .Map(z => z.IsEmployee, z => z.IsEmployee)
             .Map(z => z.PhoneNumber, x => x.PhoneNumber)
             .Map(z => z.LastName, x => x.LastName)
             .Map(z => z.MiddleName, z => z.MiddleName);
-        
+
         config.NewConfig<Account, ViewAccount>()
             .Map(z => z.FirstName, x => x.FirstName)
             .Map(z => z.PhoneNumber, x => x.PhoneNumber)
@@ -53,21 +53,21 @@ public class ConfigAdapter : IRegister
         config.NewConfig<Auto, dtoAutoCreate>()
             .Map(z => z.Title, x => x.Title)
             .Map(z => z.AutoNumber, x => x.Title);
-        
+
         config.NewConfig<Auto, dtoAutoUpdate>()
             .Map(z => z.Title, x => x.Title)
             .Map(z => z.AutoNumber, x => x.Title);
 
         config.NewConfig<Contragent, dtoContragentCreate>()
             .Map(z => z.Title, x => x.Title);
-        
+
         config.NewConfig<Contragent, dtoContragentUpdate>()
             .Map(z => z.Title, x => x.Title)
-            .Map(z=> z.ContragentID, x=> x.ContragentID);
+            .Map(z => z.ContragentID, x => x.ContragentID);
 
         config.NewConfig<Contragent, ViewContragent>()
             .Map(z => z.Title, x => x.Title)
-            .Map(z=> z.ContragentID, x=> x.ContragentID);
+            .Map(z => z.ContragentID, x => x.ContragentID);
 
         config.NewConfig<Document, dtoDocumentCreate>()
             .Map(z => z.Title, x => x.Title)
@@ -75,22 +75,22 @@ public class ConfigAdapter : IRegister
             .Map(z => z.Number, x => x.Number)
             .Map(z => z.Seria, x => x.Seria)
             .Map(z => z.DateOfIssue, x => x.DateOfIssue);
-        
+
         config.NewConfig<Document, dtoDocumentUpdate>()
             .Map(z => z.Title, x => x.Title)
             .Map(z => z.Authority, x => x.Authority)
             .Map(z => z.Number, x => x.Number)
             .Map(z => z.Seria, x => x.Seria)
             .Map(z => z.DateOfIssue, x => x.DateOfIssue)
-            .Map(z=> z.DocumentID, x=> x.DocumentID);
-        
+            .Map(z => z.DocumentID, x => x.DocumentID);
+
         config.NewConfig<Document, ViewDocument>()
             .Map(z => z.Title, x => x.Title)
             .Map(z => z.Authority, x => x.Authority)
             .Map(z => z.Number, x => x.Number)
             .Map(z => z.Seria, x => x.Seria)
             .Map(z => z.DateOfIssue, x => x.DateOfIssue)
-            .Map(z=> z.DocumentID, x=> x.DocumentID);
+            .Map(z => z.DocumentID, x => x.DocumentID);
 
         config.NewConfig<File, ViewFile>()
             .Map(z => z.FileName, x => x.FileName)
@@ -111,8 +111,8 @@ public class ConfigAdapter : IRegister
             .Map(z => z.IdAccount, x => x.Account!.AccountID)
             .Map(z => z.IdContragent, x => x.Contragent!.ContragentID)
             .Map(z => z.IdAuto, x => x.Auto!.AutoID)
-            .Map(z=> z.OrderID, x=> x.OrderID);
-        
+            .Map(z => z.OrderID, x => x.OrderID);
+
         config.NewConfig<Order, ViewOrder>()
             .Map(z => z.AutoNumber, x => x.Auto!.AutoNumber)
             .Map(z => z.AutoTitle, x => x.Auto!.Title)
@@ -125,5 +125,32 @@ public class ConfigAdapter : IRegister
             .Map(z => z.DateTimeRegistration, x => x.DateTimeRegistration)
             .Map(z => z.DateTimeEndOrder, x => x.DateTimeEndOrder)
             .Map(z => z.DateTimeStartOrder, x => x.DateTimeStartOrder);
+
+        config.NewConfig<OrderDetail, ViewOrderDetail>()
+            .Map(z => z.IdAccountStoreKeeper, x => x.StoreKeeperAccount!.AccountID)
+            .Map(z => z.Description, x => x.Description)
+            .Map(z => z.Destination, x => x.Destination)
+            .Map(z => z.NumRealese, x => x.NumRealese)
+            .Map(z => z.Size, x => x.Size)
+            .Map(z => z.Nomenclature, x => x.Nomenclature)
+            .Map(x => x.CountPodons, x => x.CountPodons)
+            .Map(z => z.PacketDocuments, x => x.PacketDocuments)
+            .Map(x => x.TochkaLoad, x => x.TochkaLoad)
+            .Map(x => x.TypeLoad, x => x.TypeLoad)
+            .Map(z => z.OrderDetailID, x => x.OrderDetailID)
+            .Map(z => z.IdAccountStoreKeeper, x => x.StoreKeeperAccount!.AccountID);
+
+        config.NewConfig<OrderDetail, dtoOrderDetailsUpdate>()
+            .Map(z => z.IdAccountStoreKeeper, x => x.StoreKeeperAccount!.AccountID)
+            .Map(z => z.Description, x => x.Description)
+            .Map(z => z.Destination, x => x.Destination)
+            .Map(z => z.NumRealese, x => x.NumRealese)
+            .Map(z => z.Size, x => x.Size)
+            .Map(z => z.Nomenclature, x => x.Nomenclature)
+            .Map(x => x.CountPodons, x => x.CountPodons)
+            .Map(z => z.PacketDocuments, x => x.PacketDocuments)
+            .Map(x => x.TochkaLoad, x => x.TochkaLoad)
+            .Map(x => x.TypeLoad, x => x.TypeLoad)
+            .Map(z => z.OrderDetailID, x => x.OrderDetailID);
     }
 }
