@@ -10,7 +10,7 @@ namespace RegistrantApp.Server.BLL;
 
 public class OrdersAdapter : BaseAdapter
 {
-    protected OrdersAdapter(RaContext ef) : base(ef)
+    public OrdersAdapter(RaContext ef) : base(ef)
     {
     }
 

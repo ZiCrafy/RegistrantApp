@@ -29,7 +29,7 @@ public class OrderDetails : BBApi
     }
 
     [HttpPut("Update")]
-    public async Task<IActionResult> Update([FromHeader] string token, dtoOrderDetailsUpdate dto)
+    public async Task<IActionResult> Update([FromHeader] string token,[FromBody] dtoOrderDetailsUpdate dto)
     {
         if (!ValidateToken(token, out var session))
             return StatusCode(401);

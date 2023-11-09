@@ -29,7 +29,7 @@ public class Orders : BBApi
     }
 
     [HttpPost("Create")]
-    public async Task<IActionResult> Create([FromHeader] string token, dtoOrderCreate dto)
+    public async Task<IActionResult> Create([FromHeader] string token, [FromBody] dtoOrderCreate dto)
     {
         if (!ValidateToken(token, out var session))
             return StatusCode(401);
@@ -40,7 +40,7 @@ public class Orders : BBApi
     }
     
     [HttpPut("Update")]
-    public async Task<IActionResult> Update([FromHeader] string token, dtoOrderUpdate dto)
+    public async Task<IActionResult> Update([FromHeader] string token, [FromBody] dtoOrderUpdate dto)
     {
         if (!ValidateToken(token, out var session))
             return StatusCode(401);
