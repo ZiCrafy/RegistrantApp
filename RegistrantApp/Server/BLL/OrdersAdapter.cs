@@ -51,25 +51,26 @@ public class OrdersAdapter : BaseAdapter
             .ToList()
             .Adapt<List<ViewOrder>>();
 
-        var pagionation = new ViewOrderPagination()
+        var pagination = new ViewOrderPagination()
         {
             TotalRecords = totalRecords,
             TotalPages = totalRecords / recordsByPage,
             Orders = data
         };
 
-        return pagionation;
+        return pagination;
     }
 
     public async Task<ViewOrderPagination> Get(DateOnly startDate, DateOnly startEnd, int index,
         int recordsByPage, bool showDeleted)
     {
+        
         var totalRecords = _ef.Orders
             .Include(x => x.Auto)
             .Include(x => x.Account)
-            .Count(order => order.DateTimePlannedArrive >= new DateTime(startDate.Year, startDate.Month, startDate.Day)
+            .Count(order => order.DateTimePlannedArrive.Date >= new DateTime(startDate.Year, startDate.Month, startDate.Day).Date
                             &&
-                            order.DateTimePlannedArrive <= new DateTime(startEnd.Year, startEnd.Month, startEnd.Day)
+                            order.DateTimePlannedArrive.Date <= new DateTime(startEnd.Year, startEnd.Month, startEnd.Day).Date
                             &&
                             order.IsDeleted == showDeleted);
 
@@ -77,9 +78,9 @@ public class OrdersAdapter : BaseAdapter
             .Include(x => x.Auto)
             .Include(x => x.Account)
             .Where(order =>
-                order.DateTimePlannedArrive >= new DateTime(startDate.Year, startDate.Month, startDate.Day)
+                order.DateTimePlannedArrive.Date >= new DateTime(startDate.Year, startDate.Month, startDate.Day).Date
                 &&
-                order.DateTimePlannedArrive <= new DateTime(startEnd.Year, startEnd.Month, startEnd.Day)
+                order.DateTimePlannedArrive.Date <= new DateTime(startEnd.Year, startEnd.Month, startEnd.Day).Date
                 &&
                 order.IsDeleted == showDeleted)
             .OrderBy(order => order.DateTimePlannedArrive)
@@ -89,14 +90,14 @@ public class OrdersAdapter : BaseAdapter
             .Adapt<List<ViewOrder>>();
 
 
-        var pagionation = new ViewOrderPagination()
+        var pagination = new ViewOrderPagination()
         {
             TotalRecords = totalRecords,
             TotalPages = totalRecords / recordsByPage,
             Orders = data
         };
 
-        return pagionation;
+        return pagination;
     }
 
     public async Task<ViewOrder> Create(dtoOrderCreate dto)
@@ -105,7 +106,7 @@ public class OrdersAdapter : BaseAdapter
         dto.Adapt(order);
 
         order.Contragent =
-            await _ef.Contragents.FirstOrDefaultAsync(contrant => contrant.ContragentID == dto.IdContragent);
+            await _ef.Contragents.FirstOrDefaultAsync(contragent => contragent.ContragentID == dto.IdContragent);
         order.Auto = await _ef.Autos.FirstOrDefaultAsync(auto => auto.AutoID == dto.IdAuto);
         order.Account = await _ef.Accounts.FirstOrDefaultAsync(account => account.AccountID == dto.IdAccount);
         order.OrderDetail = new OrderDetail();
