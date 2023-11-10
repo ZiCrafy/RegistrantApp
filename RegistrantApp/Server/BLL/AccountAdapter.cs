@@ -14,7 +14,7 @@ public class AccountAdapter : BaseAdapter
     {
     }
 
-    public async Task<ViewAccount> Get(long idAccount)
+    public async Task<ViewAccount?> GetAsync(long idAccount)
     {
         var found = await _ef.Accounts
             .FirstOrDefaultAsync(account => account.AccountID == idAccount);
@@ -22,7 +22,7 @@ public class AccountAdapter : BaseAdapter
         return found.Adapt<ViewAccount>();
     }
 
-    public async Task<ViewAccountPagination> Get(int index, int recordsByPage, bool showEmployee,
+    public async Task<ViewAccountPagination?> GetAsync(int index, int recordsByPage, bool showEmployee,
         bool showDeleted, string search)
     {
         var totalRecords = _ef.Accounts.Count(account =>
@@ -31,63 +31,60 @@ public class AccountAdapter : BaseAdapter
              account.MiddleName.ToUpper().Contains(search.ToUpper())) &&
             account.IsDeleted == showDeleted && account.IsEmployee == showEmployee);
 
-        var data = _ef.Accounts
+        var data = await _ef.Accounts
             .Where(account =>
                 (account.FirstName.ToUpper().Contains(search.ToUpper()) ||
                  account.LastName!.ToUpper().Contains(search.ToUpper()) ||
                  account.MiddleName.ToUpper().Contains(search.ToUpper())) &&
                 account.IsDeleted == showDeleted && account.IsEmployee == showEmployee)
-            .OrderBy(account=> account.FirstName)
+            .OrderBy(account => account.FirstName)
             .Skip(recordsByPage * index)
             .Take(recordsByPage)
-            .ToList()
-            .Adapt<ICollection<ViewAccount>>();
+            .ToListAsync();
 
         var pagination = new ViewAccountPagination()
         {
             TotalRecords = totalRecords,
             TotalPages = totalRecords / recordsByPage,
-            Accounts = data
+            Accounts = data.Adapt<ICollection<ViewAccount>>()
         };
 
         return pagination;
     }
 
-    public async Task<ViewAccountPagination> Get(int index, int recordsByPage, bool showEmployee,
+    public async Task<ViewAccountPagination?> GetAsync(int index, int recordsByPage, bool showEmployee,
         bool showDeleted)
     {
         var totalRecords = _ef.Accounts.Count(account =>
             account.IsDeleted == showDeleted && account.IsEmployee == showEmployee);
 
-        var data = _ef.Accounts
+        var data = await _ef.Accounts
             .Where(account => account.IsDeleted == showDeleted && account.IsEmployee == showEmployee)
-            .OrderBy(account=> account.FirstName)
+            .OrderBy(account => account.FirstName)
             .Skip(recordsByPage * index)
             .Take(recordsByPage)
-            .ToList()
-            .Adapt<ICollection<ViewAccount>>();
+            .ToListAsync();
 
         var pagination = new ViewAccountPagination()
         {
             TotalRecords = totalRecords,
             TotalPages = totalRecords / recordsByPage,
-            Accounts = data
+            Accounts = data.Adapt<ICollection<ViewAccount>>()
         };
 
         return pagination;
     }
 
-    public async Task<ViewAccount> Add(dtoAccountCreate dto)
+    public async Task<ViewAccount?> AddAsync(dtoAccountCreate dto)
     {
         var account = new Account();
         dto.Adapt(account);
-
         await _ef.AddAsync(account);
         await _ef.SaveChangesAsync();
         return account.Adapt<ViewAccount>();
     }
 
-    public async Task<ViewAccount> Update(dtoAccountUpdate dto)
+    public async Task<ViewAccount?> UpdateAsync(dtoAccountUpdate dto)
     {
         var found = await _ef.Accounts
             .FirstOrDefaultAsync(account => account.AccountID == dto.AccountID);
@@ -103,7 +100,7 @@ public class AccountAdapter : BaseAdapter
         return found.Adapt<ViewAccount>();
     }
 
-    public async Task Delete(long[] idsAccount)
+    public async Task DeleteAsync(long[] idsAccount)
     {
         var listFound = _ef.Accounts
             .Where(account => idsAccount.Contains(account.AccountID)

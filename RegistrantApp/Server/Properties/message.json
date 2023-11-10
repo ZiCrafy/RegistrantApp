@@ -1,2 +1,9 @@
 ﻿{
+  "msg.InvalidToken" : "Срок действия токена истёк",
+  
+  "msg.NoContent" : "По запросу ничего не нашлось",
+  
+  "msg.accounts.InvalidOptions" : "Параметры для получение аккаунта(ов) неверный",
+  "msg.account.CreateError" : "Ошибка при создании аккаунта",
+  "msg.account.UpdateError" : "Ошибка при обновлении аккаунта"
 }
