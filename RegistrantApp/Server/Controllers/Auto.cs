@@ -25,10 +25,7 @@ public class Auto : BBApi
 
         var view = await _adapter.GetAsync(idAccount, showDeleted);
 
-        if (view == null)
-            return StatusCode(404, _config["msg.NoContent"]);
-        
-        return StatusCode(200, view);
+        return view == null ? StatusCode(404, _config["msg.NoContent"]) : StatusCode(200, view);
     }
     
     [HttpPost("Create")]
@@ -39,10 +36,7 @@ public class Auto : BBApi
         
         var view = await _adapter.CreateAsync(dto);
 
-        if (view == null)
-            return StatusCode(400, _config["msg.auto.CreateError"]);
-        
-        return StatusCode(200, view);
+        return view == null ? StatusCode(400, _config["msg.auto.CreateError"]) : StatusCode(200, view);
     }
     
     [HttpPut("Update")]
@@ -53,10 +47,7 @@ public class Auto : BBApi
         
         var view = await _adapter.UpdateAsync(dto);
         
-        if (view == null)
-            return StatusCode(400, _config["msg.auto.UpdateError"]);
-        
-        return StatusCode(200, view);
+        return view == null ? StatusCode(400, _config["msg.auto.UpdateError"]) : StatusCode(200, view);
     }
     
     [HttpDelete("Delete")]

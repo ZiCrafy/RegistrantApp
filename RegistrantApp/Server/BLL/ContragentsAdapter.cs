@@ -14,7 +14,7 @@ public class ContragentsAdapter : BaseAdapter
     {
     }
 
-    public async Task<ViewContragentPagination> Get(int index, int recordsByPage,
+    public async Task<ViewContragentPagination>? GetAsync(int index, int recordsByPage,
         bool showDeleted, string search = "")
     {
         var totalRecords = _ef.Contragents.Count(
@@ -23,7 +23,7 @@ public class ContragentsAdapter : BaseAdapter
                 contragent.IsDeleted == showDeleted
         );
 
-        var conragents = _ef.Contragents
+        var contragents = await _ef.Contragents
             .Where(contragent =>
                 contragent.Title.ToUpper().Contains(search) &&
                 contragent.IsDeleted == showDeleted
@@ -31,21 +31,20 @@ public class ContragentsAdapter : BaseAdapter
             .OrderBy(contragent => contragent.Title)
             .Skip(index * recordsByPage)
             .Take(recordsByPage)
-            .ToList()
-            .Adapt<List<ViewContragent>>();
+            .ToListAsync();
 
         var pagination = new ViewContragentPagination()
         {
             TotalRecords = totalRecords,
             TotalPages = totalRecords / recordsByPage,
             PageIndex = index,
-            Contragents = conragents
+            Contragents = contragents.Adapt<List<ViewContragent>>()
         };
 
         return pagination;
     }
 
-    public async Task<ViewContragentPagination> Get(int index, int recordsByPage,
+    public async Task<ViewContragentPagination> GetAsync(int index, int recordsByPage,
         bool showDeleted)
     {
         var totalRecords = _ef.Contragents.Count(
@@ -53,50 +52,47 @@ public class ContragentsAdapter : BaseAdapter
                 contragent.IsDeleted == showDeleted
         );
 
-        var contragent = _ef.Contragents
+        var contragents = await _ef.Contragents
             .Where(contragent =>
                 contragent.IsDeleted == showDeleted
             )
             .OrderBy(contragent => contragent.Title)
             .Skip(index * recordsByPage)
             .Take(recordsByPage)
-            .ToList()
-            .Adapt<List<ViewContragent>>();
+            .ToListAsync();
 
         var pagination = new ViewContragentPagination()
         {
             TotalRecords = totalRecords,
             TotalPages = totalRecords / recordsByPage,
             PageIndex = index,
-            Contragents = contragent
+            Contragents = contragents.Adapt<List<ViewContragent>>()
         };
 
         return pagination;
     }
 
-    public async Task<ViewContragent> Create(dtoContragentCreate dto)
+    public async Task<ViewContragent> CreateAsync(dtoContragentCreate dto)
     {
         var contragent = new Contragent();
         dto.Adapt(contragent);
-
         await _ef.AddAsync(contragent);
         await _ef.SaveChangesAsync();
         return contragent.Adapt<ViewContragent>();
     }
 
-    public async Task<ViewContragent> Update(dtoContragentUpdate dto)
+    public async Task<ViewContragent?> UpdateAsync(dtoContragentUpdate dto)
     {
         var foundContragent =
-            await _ef.Contragents.FirstOrDefaultAsync(contragent => contragent.ContragentID == dto.ContragentID);
+            await _ef.Contragents
+                .FirstOrDefaultAsync(contragent => contragent.ContragentID == dto.ContragentID);
 
-        if (foundContragent == null)
+        if (foundContragent is null)
             return null;
 
         dto.Adapt(foundContragent);
-
         _ef.Update(foundContragent);
         await _ef.SaveChangesAsync();
-
         return foundContragent.Adapt<ViewContragent>();
     }
 
@@ -107,7 +103,7 @@ public class ContragentsAdapter : BaseAdapter
             var foundContragent =
                 await _ef.Contragents.FirstOrDefaultAsync(contragent => contragent.ContragentID == item);
 
-            if (foundContragent == null)
+            if (foundContragent is null)
                 continue;
 
             foundContragent.IsDeleted = true;

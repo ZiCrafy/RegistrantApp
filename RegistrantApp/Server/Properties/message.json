@@ -7,5 +7,7 @@
   "msg.account.CreateError" : "Ошибка при создании аккаунта",
   "msg.account.UpdateError" : "Ошибка при обновлении аккаунта",
   "msg.auto.CreateError" : "Ошибка при создании машины",
-  "msg.auto.UpdateError" : "Ошибка при обновление машины"
+  "msg.auto.UpdateError" : "Ошибка при обновление машины",
+  "msg.contragent.CreateError" : "Ошибка при создании контрагента",
+  "msg.contragent.UpdateError" : "Ошибка при обновлении контрагента"
 }

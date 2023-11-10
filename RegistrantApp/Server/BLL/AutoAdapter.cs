@@ -18,7 +18,7 @@ public class AutoAdapter : BaseAdapter
     {
     }
 
-    public async Task<ICollection<ViewAuto>> GetAsync(long idAccount, bool showDeleted)
+    public async Task<ICollection<ViewAuto>?> GetAsync(long idAccount, bool showDeleted)
     {
         var data = await _ef.Autos
             .Include(x => x.OwnerAuto)
@@ -69,7 +69,7 @@ public class AutoAdapter : BaseAdapter
         foreach (var item in idsAuto)
         {
             var found = await _ef.Autos.FirstOrDefaultAsync(z => z.AutoID == item);
-            if (found == null)
+            if (found is null)
                 continue;
             found.IsDeleted = true;
             _ef.Update(found);

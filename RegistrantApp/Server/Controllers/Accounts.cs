@@ -28,10 +28,7 @@ public class Accounts : BBApi
 
         var view = await _adapter.GetAsync(accountId);
 
-        if (view == null)
-            return StatusCode(404, _config["msg.NoContent"]);
-
-        return StatusCode(200, view);
+        return view == null ? StatusCode(404, _config["msg.NoContent"]) : StatusCode(200, view);
     }
 
     [HttpGet("Get")]
@@ -44,9 +41,13 @@ public class Accounts : BBApi
         if (index <= 0)
             return StatusCode(400, _config["msg.accounts.InvalidOptions"]);
 
-        return string.IsNullOrEmpty(search)
-            ? StatusCode(200, await _adapter.GetAsync(index, recordsByPage, showEmployee, showDeleted))
-            : StatusCode(200, await _adapter.GetAsync(index, recordsByPage, showEmployee, showDeleted, search));
+        var view = string.IsNullOrEmpty(search)
+            ? await _adapter.GetAsync(index, recordsByPage, showEmployee, showDeleted)
+            : await _adapter.GetAsync(index, recordsByPage, showEmployee, showDeleted, search);
+
+        return view == null
+            ? StatusCode(404, _config["msg.NoContent"])
+            : StatusCode(200, view);
     }
 
     [HttpPost("Create")]
@@ -57,10 +58,7 @@ public class Accounts : BBApi
 
         var view = await _adapter.AddAsync(dto);
 
-        if (view == null)
-            return StatusCode(503, _config["msg.account.CreateError"]);
-
-        return StatusCode(200, view);
+        return view == null ? StatusCode(503, _config["msg.account.CreateError"]) : StatusCode(200, view);
     }
 
     [HttpPut("Update")]
@@ -71,10 +69,7 @@ public class Accounts : BBApi
 
         var view = await _adapter.UpdateAsync(dto);
 
-        if (view == null)
-            return StatusCode(503, _config["msg.account.UpdateError"]);
-
-        return StatusCode(200, view);
+        return view == null ? StatusCode(503, _config["msg.account.UpdateError"]) : StatusCode(200, view);
     }
 
     [HttpDelete("Delete")]

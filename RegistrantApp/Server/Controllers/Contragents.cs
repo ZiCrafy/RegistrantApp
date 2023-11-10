@@ -11,6 +11,7 @@ namespace RegistrantApp.Server.Controllers;
 public class Contragents : BBApi
 {
     private readonly ContragentsAdapter _adapter;
+
     public Contragents(RaContext ef, IConfiguration config, ContragentsAdapter adapter) : base(ef, config)
     {
         _adapter = adapter;
@@ -21,40 +22,42 @@ public class Contragents : BBApi
         bool showDeleted, string search = "")
     {
         if (!ValidateToken(token, out var session))
-            return StatusCode(401);
-        
-        return string.IsNullOrEmpty(search)
-            ? StatusCode(200, await _adapter.Get(index, recordsByPage, showDeleted))
-            : StatusCode(200, await _adapter.Get(index, recordsByPage, showDeleted, search));
+            return StatusCode(401, _config["msg.InvalidToken"]);
+
+        var view = string.IsNullOrEmpty(search)
+            ? await _adapter.GetAsync(index, recordsByPage, showDeleted)
+            : await _adapter.GetAsync(index, recordsByPage, showDeleted, search);
+
+        return view is null ? StatusCode(404, _config["msg.NoContent"]) : StatusCode(200, view);
     }
 
     [HttpPost("Create")]
     public async Task<IActionResult> Create([FromHeader] string token, dtoContragentCreate dto)
     {
         if (!ValidateToken(token, out var session))
-            return StatusCode(401);
+            return StatusCode(401, _config["msg.InvalidToken"]);
 
-        var view = await _adapter.Create(dto);
-        
-        return StatusCode(200, view);
+        var view = await _adapter.CreateAsync(dto);
+
+        return view is null ? StatusCode(400, _config["msg.contragent.CreateError"]) : StatusCode(200, view);
     }
 
     [HttpPut("Update")]
     public async Task<IActionResult> Update([FromHeader] string token, dtoContragentUpdate dto)
     {
         if (!ValidateToken(token, out var session))
-            return StatusCode(401);
+            return StatusCode(401, _config["msg.InvalidToken"]);
 
-        var view = await _adapter.Update(dto);
+        var view = await _adapter.UpdateAsync(dto);
 
-        return StatusCode(200, view);
+        return view is null ? StatusCode(400, _config["msg.contragent.Update"]) : StatusCode(200, view);
     }
 
     [HttpDelete("Delete")]
     public async Task<IActionResult> Delete([FromHeader] string token, long[] idsContragents)
     {
         if (!ValidateToken(token, out var session))
-            return StatusCode(401);
+            return StatusCode(401, _config["msg.InvalidToken"]);
 
         await _adapter.Delete(idsContragents);
 
