@@ -38,7 +38,7 @@ public class Accounts : BBApi
         if (!ValidateToken(token, out var session))
             return StatusCode(401, _config["msg.InvalidToken"]);
 
-        if (index <= 0)
+        if (index < 0)
             return StatusCode(400, _config["msg.accounts.InvalidOptions"]);
 
         var view = string.IsNullOrEmpty(search)

@@ -6,10 +6,11 @@ public class dtoChangeCredentialPassword
 {
     public string OldPassword { get; set; }
 
-    private string newPassword { get; set; }
+    private string newPassword;
+
     public string NewPassword
     {
         get => newPassword;
-        set => MyValidator.CreateMD5(value?.ToString());
+        set => newPassword = MyValidator.CreateMD5(value?.ToString());
     }
 }

@@ -5,6 +5,7 @@ using RegistrantApp.Server.Database.Base;
 using RegistrantApp.Shared.Database;
 using RegistrantApp.Shared.Dto.Security;
 using RegistrantApp.Shared.PresentationLayer.Security;
+using RegistrantApp.Shared.Validators;
 
 namespace RegistrantApp.Server.BLL;
 
@@ -60,11 +61,13 @@ public class SecurityAdapter : BaseAdapter
     public async Task<string?> ChangePasswordAsync(long idAccount, dtoChangeCredentialPassword dto)
     {
         var foundAccount = await _ef.Accounts
-            .FirstOrDefaultAsync(account => account.AccountID == idAccount
-                                            && account.Password == dto.OldPassword);
+            .FirstOrDefaultAsync(account => account.AccountID == idAccount);
 
-        if (foundAccount == null)
-            return "Аккаунт не найден или старый праоль не совпадает";
+        if (foundAccount is null)
+            return null;
+
+        if (foundAccount.Password != MyValidator.CreateMD5(dto.OldPassword))
+            return null;
 
         foundAccount.Password = dto.NewPassword;
 
