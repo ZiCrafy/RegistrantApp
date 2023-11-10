@@ -5,5 +5,7 @@
   
   "msg.accounts.InvalidOptions" : "Параметры для получение аккаунта(ов) неверный",
   "msg.account.CreateError" : "Ошибка при создании аккаунта",
-  "msg.account.UpdateError" : "Ошибка при обновлении аккаунта"
+  "msg.account.UpdateError" : "Ошибка при обновлении аккаунта",
+  "msg.auto.CreateError" : "Ошибка при создании машины",
+  "msg.auto.UpdateError" : "Ошибка при обновление машины"
 }

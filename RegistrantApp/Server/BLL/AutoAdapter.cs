@@ -18,43 +18,53 @@ public class AutoAdapter : BaseAdapter
     {
     }
 
-    public async Task<ICollection<ViewAuto>> Get(long idAccount, bool showDeleted)
+    public async Task<ICollection<ViewAuto>> GetAsync(long idAccount, bool showDeleted)
     {
-        var data = _ef.Autos
+        var data = await _ef.Autos
             .Include(x => x.OwnerAuto)
-            .Where(auto => auto.OwnerAuto.AccountID == idAccount && auto.IsDeleted == showDeleted)
-            .ToList();
+            .Where(auto => auto!.OwnerAuto!.AccountID == 
+                idAccount && auto.IsDeleted == showDeleted)
+            .ToListAsync();
 
         return data.Adapt<List<ViewAuto>>();
     }
 
-    public async Task<ViewAuto> Create(dtoAutoCreate dto)
+    public async Task<ViewAuto?> CreateAsync(dtoAutoCreate dto)
     {
         var auto = new Auto();
         dto.Adapt(auto);
-        auto.OwnerAuto = await _ef.Accounts.FirstOrDefaultAsync(account => account.AccountID == dto.OwnerAutoId)!;
+       
+        auto.OwnerAuto = await _ef.Accounts
+            .FirstOrDefaultAsync(account => account.AccountID == dto.OwnerAutoId);
+
+        if (auto.OwnerAuto is null)
+            return null;
+        
         await _ef.AddAsync(auto);
         await _ef.SaveChangesAsync();
         return auto.Adapt<ViewAuto>();
     }
 
-    public async Task<ViewAuto> Update(dtoAutoUpdate dto)
+    public async Task<ViewAuto?> UpdateAsync(dtoAutoUpdate dto)
     {
-        var found = await _ef.Autos.FirstOrDefaultAsync(auto => auto.AutoID == dto.AutoID);
+        var found = await _ef.Autos
+            .FirstOrDefaultAsync(auto => auto.AutoID == dto.AutoID);
+
+        if (found is null)
+            return null;
 
         dto.Adapt(found);
 
         if (dto.OwnerAutoId is not 0)
-            found!.OwnerAuto = await _ef.Accounts.FirstOrDefaultAsync(account => account.AccountID == dto.OwnerAutoId);
+            found!.OwnerAuto = await _ef.Accounts
+                .FirstOrDefaultAsync(account => account.AccountID == dto.OwnerAutoId);
         
-
         _ef.Update(found);
         await _ef.SaveChangesAsync();
-
         return found.Adapt<ViewAuto>();
     }
 
-    public async Task Delete(IEnumerable<long> idsAuto)
+    public async Task DeleteAsync(IEnumerable<long> idsAuto)
     {
         foreach (var item in idsAuto)
         {
