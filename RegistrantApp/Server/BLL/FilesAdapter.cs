@@ -17,32 +17,32 @@ public class FilesAdapter : BaseAdapter
     }
 
 
-    public async Task<ICollection<ViewFile>> GetFromDocuments(long idDocument, bool showDeleted)
+    public async Task<ICollection<ViewFile>?> GetFromDocumentsAsync(long idDocument, bool showDeleted)
     {
-        var files = _ef.Files
+        var files = await _ef.Files
             .Include(x => x.Document)
             .Where(file => file.Document!.DocumentID == idDocument && file.IsDeleted == showDeleted)
-            .ToList();
+            .ToListAsync();
 
         return files.Adapt<List<ViewFile>>();
     }
 
-    public async Task<ICollection<ViewFile>> GetFromOrder(long idOrder, bool showDeleted)
+    public async Task<ICollection<ViewFile>?> GetFromOrderAsync(long idOrder, bool showDeleted)
     {
-        var files = _ef.Files
+        var files = await _ef.Files
             .Include(x => x.Order)
             .Where(order => order.Order!.OrderID == idOrder && order.IsDeleted == showDeleted)
-            .ToList();
+            .ToListAsync();
 
         return files.Adapt<List<ViewFile>>();
     }
 
-    public async Task<FileContentResult?> Download(string idFile)
+    public async Task<FileContentResult?> DownloadAsync(string idFile)
     {
         var document = await _ef.Files
             .FirstOrDefaultAsync(file => file.FileID.ToString() == idFile.ToUpper());
 
-        if (document == null)
+        if (document is null)
             return null;
 
         var file = new FileContentResult(document.Bytes, "application/octet-stream")
@@ -53,7 +53,7 @@ public class FilesAdapter : BaseAdapter
         return file;
     }
 
-    public async Task<ViewFile> Upload(IFormFile file)
+    public async Task<ViewFile?> UploadAsync(IFormFile file)
     {
         File newFile;
 
@@ -67,7 +67,7 @@ public class FilesAdapter : BaseAdapter
                 IsDeleted = false
             };
 
-            var s = await fileStream.ReadAsync(newFile.Bytes, 0, (int)file.Length);
+            await fileStream.ReadAsync(newFile.Bytes, 0, (int)file.Length);
         }
         
         await _ef.AddAsync(newFile);
@@ -76,11 +76,12 @@ public class FilesAdapter : BaseAdapter
         return newFile.Adapt<ViewFile>();
     }
 
-    public async Task<ViewFile?> AttachFile(dtoFileAttach dto)
+    public async Task<ViewFile?> AttachFileAsync(dtoFileAttach dto)
     {
-        var foundFile = await _ef.Files.FirstOrDefaultAsync(file => file.FileID.ToString() == dto.IdFile);
+        var foundFile = await _ef.Files
+            .FirstOrDefaultAsync(file => file.FileID.ToString() == dto.IdFile);
         
-        if (foundFile == null)
+        if (foundFile is null)
             return null;
         
         foundFile.Order = string.IsNullOrEmpty(dto.IdOrder.ToString())

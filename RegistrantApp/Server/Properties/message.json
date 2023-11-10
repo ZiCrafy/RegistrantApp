@@ -11,5 +11,7 @@
   "msg.contragent.CreateError" : "Ошибка при создании контрагента",
   "msg.contragent.UpdateError" : "Ошибка при обновлении контрагента",
   "msg.documents.CreateError" : "Ошибка при создании документа",
-  "msg.documents.UpdateError" : "Ошибка при обновлени документа"
+  "msg.documents.UpdateError" : "Ошибка при обновлени документа",
+  "msg.files.FileFailedUpload" : "Ошибка загрузки файла",
+  "msg.files.FileFailedAttach" : "Ошибка закрпления файла"
 }
