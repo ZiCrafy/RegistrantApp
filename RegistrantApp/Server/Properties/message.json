@@ -9,5 +9,7 @@
   "msg.auto.CreateError" : "Ошибка при создании машины",
   "msg.auto.UpdateError" : "Ошибка при обновление машины",
   "msg.contragent.CreateError" : "Ошибка при создании контрагента",
-  "msg.contragent.UpdateError" : "Ошибка при обновлении контрагента"
+  "msg.contragent.UpdateError" : "Ошибка при обновлении контрагента",
+  "msg.documents.CreateError" : "Ошибка при создании документа",
+  "msg.documents.UpdateError" : "Ошибка при обновлени документа"
 }

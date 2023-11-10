@@ -15,46 +15,48 @@ public class DocumentAdapter : BaseAdapter
     }
 
 
-    public async Task<ICollection<ViewDocument>> Get(long idAccount, bool showDeleted)
+    public async Task<ICollection<ViewDocument>?> GetAsync(long idAccount, bool showDeleted)
     {
-        var listDocuments = _ef.Documents
+        var listDocuments = await _ef.Documents
             .Include(x => x.Account)
             .Where(doc => doc.Account!.AccountID == idAccount && doc.IsDeleted == showDeleted)
-            .ToList();
+            .ToListAsync();
 
         return listDocuments.Adapt<List<ViewDocument>>();
     }
 
-    public async Task<ViewDocument> Create(dtoDocumentCreate dto)
+    public async Task<ViewDocument?> CreateAsync(dtoDocumentCreate dto)
     {
         var document = new Document();
         dto.Adapt(document);
 
-        document.Account = await _ef.Accounts.FirstOrDefaultAsync(account => account.AccountID == dto.idAccount);
-        
+        document.Account = await _ef.Accounts
+            .FirstOrDefaultAsync(account => account.AccountID == dto.idAccount);
         await _ef.AddAsync(document);
         await _ef.SaveChangesAsync();
-
         return document.Adapt<ViewDocument>();
     }
 
-    public async Task<ViewDocument> Update(dtoDocumentUpdate dto)
+    public async Task<ViewDocument?> UpdateAsync(dtoDocumentUpdate dto)
     {
         var foundDocument = await _ef.Documents
             .FirstOrDefaultAsync(document => document.DocumentID == dto.DocumentID);
 
+        if (foundDocument is null)
+            return null;
         dto.Adapt(foundDocument);
         _ef.Update(foundDocument);
         await _ef.SaveChangesAsync();
         return foundDocument.Adapt<ViewDocument>();
     }
 
-    public async Task Delete(IEnumerable<long> idsDocument)
+    public async Task DeleteAsync(IEnumerable<long> idsDocument)
     {
         foreach (var item in idsDocument)
         {
-            var foundDocument = await _ef.Documents.FirstOrDefaultAsync(document => document.DocumentID == item);
-            if (foundDocument == null)
+            var foundDocument = await _ef.Documents
+                .FirstOrDefaultAsync(document => document.DocumentID == item);
+            if (foundDocument is null)
                 continue;
 
             foundDocument.IsDeleted = true;

@@ -50,7 +50,7 @@ public class Contragents : BBApi
 
         var view = await _adapter.UpdateAsync(dto);
 
-        return view is null ? StatusCode(400, _config["msg.contragent.Update"]) : StatusCode(200, view);
+        return view is null ? StatusCode(400, _config["msg.contragent.UpdateError"]) : StatusCode(200, view);
     }
 
     [HttpDelete("Delete")]
