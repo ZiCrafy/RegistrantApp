@@ -13,5 +13,7 @@
   "msg.documents.CreateError" : "Ошибка при создании документа",
   "msg.documents.UpdateError" : "Ошибка при обновлени документа",
   "msg.files.FileFailedUpload" : "Ошибка загрузки файла",
-  "msg.files.FileFailedAttach" : "Ошибка закрпления файла"
+  "msg.files.FileFailedAttach" : "Ошибка закрпления файла",
+  "msg.orders.CreateError" : "Ошибка при создании заказа",
+  "msg.orders.UpdateError" : "Ошибка при обновлении заказа"
 }

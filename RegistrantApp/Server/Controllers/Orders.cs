@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using RegistrantApp.Server.BLL;
 using RegistrantApp.Server.Controllers.Base;
 using RegistrantApp.Server.Database.Base;
@@ -22,10 +21,12 @@ public class Orders : BBApi
     {
         if (!ValidateToken(token, out var session))
             return StatusCode(401);
-        
-        return string.IsNullOrEmpty(search)
-            ? StatusCode(200, await _adapter.Get(startDate, startEnd, index, recordsByPage, showDeleted))
-            : StatusCode(200, await _adapter.Get(startDate, startEnd, index, recordsByPage, showDeleted, search));
+
+        var view = string.IsNullOrEmpty(search)
+            ? await _adapter.GetAsync(startDate, startEnd, index, recordsByPage, showDeleted)
+            : await _adapter.GetAsync(startDate, startEnd, index, recordsByPage, showDeleted, search);
+
+        return view is null ? StatusCode(404, _config["msg.NoContent"]) : StatusCode(200, view);
     }
 
     [HttpPost("Create")]
@@ -34,9 +35,9 @@ public class Orders : BBApi
         if (!ValidateToken(token, out var session))
             return StatusCode(401);
         
-        var view = await _adapter.Create(dto);
+        var view = await _adapter.CreateAsync(dto);
         
-        return StatusCode(200, view);
+        return view is null? StatusCode(400, _config["msg.orders.CreateError"]) : StatusCode(200, view);
     }
     
     [HttpPut("Update")]
@@ -45,9 +46,9 @@ public class Orders : BBApi
         if (!ValidateToken(token, out var session))
             return StatusCode(401);
         
-        var view = _adapter.Update(dto);
+        var view = await _adapter.UpdateAsync(dto);
         
-        return StatusCode(200, view);
+        return view is null? StatusCode(400, _config["msg.orders.UpdateError"]) : StatusCode(200, view);
     }
     
     [HttpDelete("Delete")]
@@ -56,8 +57,7 @@ public class Orders : BBApi
         if (!ValidateToken(token, out var session))
             return StatusCode(401);
 
-        await _adapter.Delete(idsOrders);
-        
+        await _adapter.DeleteAsync(idsOrders);
         return StatusCode(200);
     }
 }
