@@ -13,27 +13,32 @@ public class OrderDetailsAdapter : BaseAdapter
     {
     }
 
-    public async Task<ViewOrderDetail> Get(long idOrder)
+    public async Task<ViewOrderDetail?> GetAsync(long idOrder)
     {
         var found = await _ef
             .OrderDetails
             .FirstOrDefaultAsync(x => x.OrderDetailID == idOrder);
 
-        return found.Adapt<ViewOrderDetail>();
+        return found?.Adapt<ViewOrderDetail>();
     }
 
-    public async Task<ViewOrderDetail> Update(dtoOrderDetailsUpdate dto)
+    public async Task<ViewOrderDetail?> UpdateAsync(dtoOrderDetailsUpdate dto)
     {
         var foundOrderDetail = await _ef.OrderDetails.FirstOrDefaultAsync(order =>
             order.OrderDetailID == dto.OrderDetailID
         );
 
+        if (foundOrderDetail is null)
+            return null;
+        
         dto.Adapt(foundOrderDetail);
 
-        foundOrderDetail!.StoreKeeperAccount = await _ef.Accounts
+        foundOrderDetail.StoreKeeperAccount = await _ef.Accounts
             .FirstOrDefaultAsync(account => account.AccountID == dto.IdAccountStoreKeeper);
-
-
+        
+        if (foundOrderDetail.StoreKeeperAccount is null)
+            return null;
+        
         _ef.Update(foundOrderDetail);
         await _ef.SaveChangesAsync();
 

@@ -21,21 +21,21 @@ public class OrderDetails : BBApi
     public async Task<IActionResult> Get([FromHeader] string token, long idOrder)
     {
         if (!ValidateToken(token, out var session))
-            return StatusCode(401);
-
-        var view = await _adapter.Get(idOrder);
+            return StatusCode(401, _config["msg.InvalidToken"]);
         
-        return StatusCode(200, view);
+        var view = await _adapter.GetAsync(idOrder);
+
+        return view is null? StatusCode(404, _config["msg.MoContent"]) : StatusCode(200, view);
     }
 
     [HttpPut("Update")]
     public async Task<IActionResult> Update([FromHeader] string token,[FromBody] dtoOrderDetailsUpdate dto)
     {
         if (!ValidateToken(token, out var session))
-            return StatusCode(401);
+            return StatusCode(401, _config["msg.InvalidToken"]);
 
-        var view = await _adapter.Update(dto);
+        var view = await _adapter.UpdateAsync(dto);
         
-        return StatusCode(200, view);
+        return view is null? StatusCode(404, _config["msg.MoContent"]) : StatusCode(200, view);
     }
 }
