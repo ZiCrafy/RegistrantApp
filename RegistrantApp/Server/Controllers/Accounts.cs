@@ -39,7 +39,7 @@ public class Accounts : BBApi
         bool showDeleted, string search = "")
     {
         if (!ValidateToken(token, out var session))
-            return StatusCode(401);
+            return StatusCode(401, _config["msg.InvalidToken"]);
 
         if (index <= 0)
             return StatusCode(400, _config["msg.accounts.InvalidOptions"]);
@@ -53,7 +53,7 @@ public class Accounts : BBApi
     public async Task<IActionResult> Create([FromHeader] string token, [FromBody] dtoAccountCreate dto)
     {
         if (!ValidateToken(token, out var session))
-            return StatusCode(401);
+            return StatusCode(401, _config["msg.InvalidToken"]);
 
         var view = await _adapter.AddAsync(dto);
 
@@ -67,7 +67,7 @@ public class Accounts : BBApi
     public async Task<IActionResult> Update([FromHeader] string token, [FromBody] dtoAccountUpdate dto)
     {
         if (!ValidateToken(token, out var session))
-            return StatusCode(401);
+            return StatusCode(401, _config["msg.InvalidToken"]);
 
         var view = await _adapter.UpdateAsync(dto);
 
@@ -81,7 +81,7 @@ public class Accounts : BBApi
     public async Task<IActionResult> Delete([FromHeader] string token, long[] idsAccount)
     {
         if (!ValidateToken(token, out var session))
-            return StatusCode(401);
+            return StatusCode(401, _config["msg.InvalidToken"]);
 
         await _adapter.DeleteAsync(idsAccount);
         return StatusCode(200);
