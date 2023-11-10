@@ -1,5 +1,9 @@
 ﻿{
   "msg.InvalidToken" : "Срок действия токена истёк",
+  "msg.security.AuthFailed" : "Неправильный логин или пароль",
+  "msg.security.ChangePassFailed" : "Не удалось сменить пароль",
+  "msg.security.SuccessPassChanged" : "Пароль успешно изменен",
+  "msg.security.FinishSessionFailed" : "Не удалось завершить сессию",
   
   "msg.NoContent" : "По запросу ничего не нашлось",
   

@@ -20,27 +20,28 @@ public class Security : BBApi
     [HttpPost("CreateSession")]
     public async Task<IActionResult> CreateSession([FromBody] dtoCredentials dto)
     {
-        var view = await _adapter.CreateSession(dto);
-        
-        return view != null ? StatusCode(200, view) : StatusCode(401, "Auth Failed");
+        var view = await _adapter.CreateSessionAsync(dto);
+
+        return view is null ? StatusCode(401, _config["msg.security.AuthFailed"]) : StatusCode(200, view);
     }
 
     [HttpPut("EndSession")]
     public async Task<IActionResult> EndSession([FromBody] dtoAccessTokenFinished dto)
     {
-        var view = await _adapter.EndSession(dto);
-        
-        return view != null ? StatusCode(200, view) : StatusCode(404, "Not Found!");
+        var view = await _adapter.EndSessionAsync(dto);
+
+        return view is null ? StatusCode(404, _config["msg.security.FinishSessionFailed"]) : StatusCode(200, view);
     }
 
     [HttpPut("ChangePassword")]
-    public async Task<IActionResult> ChangePassword([FromHeader] string token, [FromBody] dtoChangeCredentialPassword dto)
+    public async Task<IActionResult> ChangePassword([FromHeader] string token,
+        [FromBody] dtoChangeCredentialPassword dto)
     {
         if (!ValidateToken(token, out var session))
             return StatusCode(401);
-        
-        var view = await _adapter.ChangePassword(session.OwnerToken.AccountID, dto);
 
-        return view != null ? StatusCode(200, view) : StatusCode(404, "Not Found!");
+        var view = await _adapter.ChangePasswordAsync(session.OwnerToken.AccountID, dto);
+
+        return view is null ? StatusCode(404, _config["msg.security.ChangePassFailed"]) : StatusCode(200, _config["msg.security.SuccessPassChanged"]);
     }
 }

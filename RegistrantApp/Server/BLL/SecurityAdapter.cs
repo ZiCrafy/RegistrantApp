@@ -14,13 +14,13 @@ public class SecurityAdapter : BaseAdapter
     {
     }
 
-    public async Task<AccessToken?> CreateSession(dtoCredentials dto)
+    public async Task<AccessToken?> CreateSessionAsync(dtoCredentials dto)
     {
         var foundAccount = await _ef.Accounts
             .FirstOrDefaultAsync(account => account.PhoneNumber.ToString() == dto.Login
                                             && account.Password == dto.Password);
 
-        if (foundAccount == null)
+        if (foundAccount is null)
             return null;
 
         var token = new Token()
@@ -41,13 +41,13 @@ public class SecurityAdapter : BaseAdapter
         return token.Adapt<AccessToken>();
     }
 
-    public async Task<AccessToken?> EndSession(dtoAccessTokenFinished dto)
+    public async Task<AccessToken?> EndSessionAsync(dtoAccessTokenFinished dto)
     {
         var foundSession = await _ef.Tokens
             .FirstOrDefaultAsync(session =>
                 session.TokenID == dto.Token && session.DateTimeSessionExpired >= DateTime.Now);
 
-        if (foundSession == null)
+        if (foundSession is null)
             return null;
 
         foundSession.DateTimeSessionExpired = DateTime.Now;
@@ -57,7 +57,7 @@ public class SecurityAdapter : BaseAdapter
         return foundSession.Adapt<AccessToken>();
     }
 
-    public async Task<string?> ChangePassword(long idAccount, dtoChangeCredentialPassword dto)
+    public async Task<string?> ChangePasswordAsync(long idAccount, dtoChangeCredentialPassword dto)
     {
         var foundAccount = await _ef.Accounts
             .FirstOrDefaultAsync(account => account.AccountID == idAccount
