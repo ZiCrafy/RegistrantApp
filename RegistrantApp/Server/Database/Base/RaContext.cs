@@ -15,4 +15,9 @@ public class RaContext : DbContext
     public DbSet<Token> Tokens { get; set; }
     public DbSet<File> Files { get; set; }
     public DbSet<Document> Documents { get; set; }
+
+    public virtual async Task AuditChanges(Account account)
+    {
+        throw new NotImplementedException();
+    }
 }

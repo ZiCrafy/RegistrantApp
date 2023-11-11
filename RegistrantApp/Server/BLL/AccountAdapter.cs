@@ -80,13 +80,11 @@ public class AccountAdapter : BaseAdapter
         var account = new Account();
         dto.Adapt(account);
         await _ef.AddAsync(account);
-        await _ef.SaveChangesAsync();
-        
-        //AuditAdd(session.OwnerToken, account);
+        await _ef.AuditChanges(session.OwnerToken);
         return account.Adapt<ViewAccount>();
     }
 
-    public async Task<ViewAccount?> UpdateAsync(dtoAccountUpdate dto)
+    public async Task<ViewAccount?> UpdateAsync(Token session, dtoAccountUpdate dto)
     {
         var found = await _ef.Accounts
             .FirstOrDefaultAsync(account => account.AccountID == dto.AccountID);
@@ -97,12 +95,11 @@ public class AccountAdapter : BaseAdapter
             found!.Password = dto.Password;
 
         _ef.Update(found!);
-        await _ef.SaveChangesAsync();
-
+        await _ef.AuditChanges(session.OwnerToken);
         return found.Adapt<ViewAccount>();
     }
 
-    public async Task DeleteAsync(long[] idsAccount)
+    public async Task DeleteAsync(Token session, long[] idsAccount)
     {
         var listFound = _ef.Accounts
             .Where(account => idsAccount.Contains(account.AccountID)
@@ -116,6 +113,6 @@ public class AccountAdapter : BaseAdapter
             _ef.Update(account);
         });
 
-        await _ef.SaveChangesAsync();
+        await _ef.AuditChanges(session.OwnerToken);
     }
 }

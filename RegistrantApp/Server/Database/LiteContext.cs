@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using RegistrantApp.Server.Database.Base;
 using RegistrantApp.Shared.Database;
+using Audit = RegistrantApp.ClientApi.Controllers.Audit;
 
 namespace RegistrantApp.Server.Database;
 
@@ -18,22 +19,14 @@ public class LiteContext : RaContext
     {
         optionsBuilder.UseSqlite(_config["connectionString"]);
     }
-
-    /*public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
-    {
-        await AuditChanges();
-        return base.SaveChangesAsync(cancellationToken);
-    }
-
-
-    public async Task AuditChanges()
+    
+    public override async Task AuditChanges(Account account)
     {
         var entityEntries = ChangeTracker.Entries()
-            .Where(x => x.State == EntityState.Added ||
-                        x.State == EntityState.Modified ||
-                        x.State == EntityState.Deleted).ToList();
+            .Where(x => x.State is EntityState.Added or EntityState.Modified or EntityState.Deleted).ToList();
 
-
+        var ownerEvent = $"{account.FirstName} {account.MiddleName.First()}. {account.LastName?.First()}.";
+        
         foreach (var entityEntry in entityEntries)
         {
             foreach (var prop in entityEntry.OriginalValues.Properties)
@@ -46,16 +39,23 @@ public class LiteContext : RaContext
                     ? entityEntry.CurrentValues[prop]?.ToString()
                     : null;
 
-                if (originalValue == currentValue) continue;
+                if ((originalValue == currentValue) && (entityEntry.State != EntityState.Added)) continue;
+
+                var audit = new RegistrantApp.Shared.Database.Audit()
+                {
+                    DateTimeEvent = DateTime.Now,
+                    OwnerEvent = ownerEvent,
+                    Object = entityEntry.Entity.GetType().ToString()!,
+                    Action = entityEntry.State.ToString(),
+                    Property = prop.Name,
+                    ValueAfter = originalValue,
+                    ValueBefore = currentValue
+                };
                 
-                var changeAudit = await GetChangeAuditAsync(entityEntry, timeStamp);
-                
-                changeAudit.PropertyName = prop.Name;
-                changeAudit.OldValue = originalValue;
-                changeAudit.NewValue = currentValue;
-                
-                await this.AddAsync(changeAudit);
+                await AddAsync(audit);
             }
         }
-    }*/
+        
+        await SaveChangesAsync();
+    }
 }

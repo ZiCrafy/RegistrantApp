@@ -67,7 +67,7 @@ public class Accounts : BBApi
         if (!ValidateToken(token, out var session))
             return StatusCode(401, _config["msg.InvalidToken"]);
 
-        var view = await _adapter.UpdateAsync(dto);
+        var view = await _adapter.UpdateAsync(session, dto);
 
         return view == null ? StatusCode(503, _config["msg.account.UpdateError"]) : StatusCode(200, view);
     }
@@ -78,7 +78,7 @@ public class Accounts : BBApi
         if (!ValidateToken(token, out var session))
             return StatusCode(401, _config["msg.InvalidToken"]);
 
-        await _adapter.DeleteAsync(idsAccount);
+        await _adapter.DeleteAsync(session, idsAccount);
         return StatusCode(200);
     }
 }
