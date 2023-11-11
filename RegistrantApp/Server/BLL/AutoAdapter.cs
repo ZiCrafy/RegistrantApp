@@ -29,7 +29,7 @@ public class AutoAdapter : BaseAdapter
         return data.Adapt<List<ViewAuto>>();
     }
 
-    public async Task<ViewAuto?> CreateAsync(dtoAutoCreate dto)
+    public async Task<ViewAuto?> CreateAsync(Token session, dtoAutoCreate dto)
     {
         var auto = new Auto();
         dto.Adapt(auto);
@@ -41,11 +41,11 @@ public class AutoAdapter : BaseAdapter
             return null;
 
         await _ef.AddAsync(auto);
-        await _ef.SaveChangesAsync();
+        await _ef.AuditChanges(session.OwnerToken);
         return auto.Adapt<ViewAuto>();
     }
 
-    public async Task<ViewAuto?> UpdateAsync(dtoAutoUpdate dto)
+    public async Task<ViewAuto?> UpdateAsync(Token session, dtoAutoUpdate dto)
     {
         var found = await _ef.Autos
             .FirstOrDefaultAsync(auto => auto.AutoID == dto.AutoID);
@@ -60,11 +60,11 @@ public class AutoAdapter : BaseAdapter
                 .FirstOrDefaultAsync(account => account.AccountID == dto.OwnerAutoId);
 
         _ef.Update(found);
-        await _ef.SaveChangesAsync();
+        await _ef.AuditChanges(session.OwnerToken);
         return found.Adapt<ViewAuto>();
     }
 
-    public async Task DeleteAsync(IEnumerable<long> idsAuto)
+    public async Task DeleteAsync(Token session, IEnumerable<long> idsAuto)
     {
         foreach (var item in idsAuto)
         {
@@ -75,6 +75,6 @@ public class AutoAdapter : BaseAdapter
             _ef.Update(found);
         }
 
-        await _ef.SaveChangesAsync();
+        await _ef.AuditChanges(session.OwnerToken);
     }
 }

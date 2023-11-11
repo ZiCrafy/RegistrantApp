@@ -37,7 +37,7 @@ public class SecurityAdapter : BaseAdapter
         };
 
         await _ef.AddAsync(token);
-        await _ef.SaveChangesAsync();
+        await _ef.AuditChanges(foundAccount);
 
         return token.Adapt<AccessToken>();
     }
@@ -45,6 +45,7 @@ public class SecurityAdapter : BaseAdapter
     public async Task<AccessToken?> EndSessionAsync(dtoAccessTokenFinished dto)
     {
         var foundSession = await _ef.Tokens
+            .Include(x=> x.OwnerToken)
             .FirstOrDefaultAsync(session =>
                 session.TokenID == dto.Token && session.DateTimeSessionExpired >= DateTime.Now);
 
@@ -54,7 +55,7 @@ public class SecurityAdapter : BaseAdapter
         foundSession.DateTimeSessionExpired = DateTime.Now;
 
         _ef.Update(foundSession);
-        await _ef.SaveChangesAsync();
+        await _ef.AuditChanges(foundSession.OwnerToken);
         return foundSession.Adapt<AccessToken>();
     }
 
@@ -72,7 +73,7 @@ public class SecurityAdapter : BaseAdapter
         foundAccount.Password = dto.NewPassword;
 
         _ef.Update(foundAccount);
-        await _ef.SaveChangesAsync();
+        await _ef.AuditChanges(foundAccount);
 
         return "Пароль изменен";
     }

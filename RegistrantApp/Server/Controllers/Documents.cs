@@ -34,7 +34,7 @@ public class Documents : BBApi
         if (!ValidateToken(token, out var session))
             return StatusCode(401, _config["msg.InvalidToken"]);
 
-        var view = await _adapter.CreateAsync(dto);
+        var view = await _adapter.CreateAsync(session,dto);
 
         return view is null ? StatusCode(400, _config["msg.documents.CreateError"]) : StatusCode(200, view);
     }
@@ -45,7 +45,7 @@ public class Documents : BBApi
         if (!ValidateToken(token, out var session))
             return StatusCode(401, _config["msg.InvalidToken"]);
 
-        var view = await _adapter.UpdateAsync(dto);
+        var view = await _adapter.UpdateAsync(session,dto);
 
         return view is null ? StatusCode(400, _config["msg.documents.CreateError"]) : StatusCode(200, view);
     }
@@ -56,7 +56,7 @@ public class Documents : BBApi
         if (!ValidateToken(token, out var session))
             return StatusCode(401, _config["msg.InvalidToken"]);
 
-        await _adapter.DeleteAsync(idsDocuments);
+        await _adapter.DeleteAsync(session,idsDocuments);
 
         return StatusCode(200);
     }

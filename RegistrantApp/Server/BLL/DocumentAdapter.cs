@@ -25,7 +25,7 @@ public class DocumentAdapter : BaseAdapter
         return listDocuments.Adapt<List<ViewDocument>>();
     }
 
-    public async Task<ViewDocument?> CreateAsync(dtoDocumentCreate dto)
+    public async Task<ViewDocument?> CreateAsync(Token session, dtoDocumentCreate dto)
     {
         var document = new Document();
         dto.Adapt(document);
@@ -33,11 +33,11 @@ public class DocumentAdapter : BaseAdapter
         document.Account = await _ef.Accounts
             .FirstOrDefaultAsync(account => account.AccountID == dto.idAccount);
         await _ef.AddAsync(document);
-        await _ef.SaveChangesAsync();
+        await _ef.AuditChanges(session.OwnerToken);
         return document.Adapt<ViewDocument>();
     }
 
-    public async Task<ViewDocument?> UpdateAsync(dtoDocumentUpdate dto)
+    public async Task<ViewDocument?> UpdateAsync(Token session, dtoDocumentUpdate dto)
     {
         var foundDocument = await _ef.Documents
             .FirstOrDefaultAsync(document => document.DocumentID == dto.DocumentID);
@@ -46,11 +46,11 @@ public class DocumentAdapter : BaseAdapter
             return null;
         dto.Adapt(foundDocument);
         _ef.Update(foundDocument);
-        await _ef.SaveChangesAsync();
+        await _ef.AuditChanges(session.OwnerToken);
         return foundDocument.Adapt<ViewDocument>();
     }
 
-    public async Task DeleteAsync(IEnumerable<long> idsDocument)
+    public async Task DeleteAsync(Token session, IEnumerable<long> idsDocument)
     {
         foreach (var item in idsDocument)
         {
@@ -61,7 +61,8 @@ public class DocumentAdapter : BaseAdapter
 
             foundDocument.IsDeleted = true;
             _ef.Update(foundDocument);
-            await _ef.SaveChangesAsync();
         }
+        
+        await _ef.AuditChanges(session.OwnerToken);
     }
 }

@@ -35,7 +35,7 @@ public class Orders : BBApi
         if (!ValidateToken(token, out var session))
             return StatusCode(401);
 
-        var view = await _adapter.CreateAsync(dto);
+        var view = await _adapter.CreateAsync(session, dto);
 
         return view is null ? StatusCode(400, _config["msg.orders.CreateError"]) : StatusCode(200, view);
     }
@@ -46,7 +46,7 @@ public class Orders : BBApi
         if (!ValidateToken(token, out var session))
             return StatusCode(401);
 
-        var view = await _adapter.UpdateAsync(dto);
+        var view = await _adapter.UpdateAsync(session, dto);
 
         return view is null ? StatusCode(400, _config["msg.orders.UpdateError"]) : StatusCode(200, view);
     }
@@ -57,7 +57,7 @@ public class Orders : BBApi
         if (!ValidateToken(token, out var session))
             return StatusCode(401);
 
-        await _adapter.DeleteAsync(idsOrders);
+        await _adapter.DeleteAsync(session, idsOrders);
         return StatusCode(200);
     }
 }

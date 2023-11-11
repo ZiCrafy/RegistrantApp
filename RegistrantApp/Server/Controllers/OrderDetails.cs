@@ -34,7 +34,7 @@ public class OrderDetails : BBApi
         if (!ValidateToken(token, out var session))
             return StatusCode(401, _config["msg.InvalidToken"]);
 
-        var view = await _adapter.UpdateAsync(dto);
+        var view = await _adapter.UpdateAsync(session, dto);
 
         return view is null ? StatusCode(404, _config["msg.MoContent"]) : StatusCode(200, view);
     }

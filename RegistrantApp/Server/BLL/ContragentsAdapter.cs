@@ -72,16 +72,16 @@ public class ContragentsAdapter : BaseAdapter
         return pagination;
     }
 
-    public async Task<ViewContragent?> CreateAsync(dtoContragentCreate dto)
+    public async Task<ViewContragent?> CreateAsync(Token session, dtoContragentCreate dto)
     {
         var contragent = new Contragent();
         dto.Adapt(contragent);
         await _ef.AddAsync(contragent);
-        await _ef.SaveChangesAsync();
+        await _ef.AuditChanges(session.OwnerToken);
         return contragent.Adapt<ViewContragent>();
     }
 
-    public async Task<ViewContragent?> UpdateAsync(dtoContragentUpdate dto)
+    public async Task<ViewContragent?> UpdateAsync(Token session, dtoContragentUpdate dto)
     {
         var foundContragent =
             await _ef.Contragents
@@ -92,11 +92,11 @@ public class ContragentsAdapter : BaseAdapter
 
         dto.Adapt(foundContragent);
         _ef.Update(foundContragent);
-        await _ef.SaveChangesAsync();
+        await _ef.AuditChanges(session.OwnerToken);
         return foundContragent.Adapt<ViewContragent>();
     }
 
-    public async Task Delete(long[] idsContragents)
+    public async Task Delete(Token session, IEnumerable<long> idsContragents)
     {
         foreach (var item in idsContragents)
         {
@@ -108,7 +108,8 @@ public class ContragentsAdapter : BaseAdapter
 
             foundContragent.IsDeleted = true;
             _ef.Update(foundContragent);
-            await _ef.SaveChangesAsync();
         }
+        
+        await _ef.AuditChanges(session.OwnerToken);
     }
 }

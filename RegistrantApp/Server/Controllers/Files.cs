@@ -68,7 +68,7 @@ public class Files : BBApi
         if (!ValidateToken(token, out var session))
             return StatusCode(401, _config["msg.InvalidToken"]);
 
-        var view = await _adapter.AttachFileAsync(dto);
+        var view = await _adapter.AttachFileAsync(session, dto);
 
         return view is null ? StatusCode(404, _config["msg.files.FileFailedAttach"]) : StatusCode(200, view);
     }

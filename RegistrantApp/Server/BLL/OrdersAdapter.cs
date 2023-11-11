@@ -101,7 +101,7 @@ public class OrdersAdapter : BaseAdapter
         return pagination;
     }
 
-    public async Task<ViewOrder?> CreateAsync(dtoOrderCreate dto)
+    public async Task<ViewOrder?> CreateAsync(Token session, dtoOrderCreate dto)
     {
         var order = new Order();
         dto.Adapt(order);
@@ -122,12 +122,12 @@ public class OrdersAdapter : BaseAdapter
         order.OrderDetail = new OrderDetail();
 
         await _ef.AddAsync(order);
-        await _ef.SaveChangesAsync();
+        await _ef.AuditChanges(session.OwnerToken);
 
         return order.Adapt<ViewOrder>();
     }
 
-    public async Task<ViewOrder?> UpdateAsync(dtoOrderUpdate dto)
+    public async Task<ViewOrder?> UpdateAsync(Token session, dtoOrderUpdate dto)
     {
         var foundOrder = await _ef.Orders
             .FirstOrDefaultAsync(order => order.OrderID == dto.OrderID);
@@ -151,12 +151,12 @@ public class OrdersAdapter : BaseAdapter
             return null;
 
         _ef.Update(foundOrder);
-        await _ef.SaveChangesAsync();
+        await _ef.AuditChanges(session.OwnerToken);
 
         return foundOrder.Adapt<ViewOrder>();
     }
 
-    public async Task DeleteAsync(IEnumerable<long> idsOrders)
+    public async Task DeleteAsync(Token session, IEnumerable<long> idsOrders)
     {
         foreach (var item in idsOrders)
         {
@@ -171,6 +171,6 @@ public class OrdersAdapter : BaseAdapter
             _ef.Update(found);
         }
 
-        await _ef.SaveChangesAsync();
+        await _ef.AuditChanges(session.OwnerToken);
     }
 }

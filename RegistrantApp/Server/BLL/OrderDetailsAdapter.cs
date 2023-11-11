@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using RegistrantApp.Server.BLL.Base;
 using RegistrantApp.Server.Database.Base;
+using RegistrantApp.Shared.Database;
 using RegistrantApp.Shared.Dto.Orders;
 using RegistrantApp.Shared.PresentationLayer.Orders;
 
@@ -22,7 +23,7 @@ public class OrderDetailsAdapter : BaseAdapter
         return found?.Adapt<ViewOrderDetail>();
     }
 
-    public async Task<ViewOrderDetail?> UpdateAsync(dtoOrderDetailsUpdate dto)
+    public async Task<ViewOrderDetail?> UpdateAsync(Token session, dtoOrderDetailsUpdate dto)
     {
         var foundOrderDetail = await _ef.OrderDetails.FirstOrDefaultAsync(order =>
             order.OrderDetailID == dto.OrderDetailID
@@ -40,7 +41,7 @@ public class OrderDetailsAdapter : BaseAdapter
             return null;
 
         _ef.Update(foundOrderDetail);
-        await _ef.SaveChangesAsync();
+        await _ef.AuditChanges(session.OwnerToken);
 
         return foundOrderDetail.Adapt<ViewOrderDetail>();
     }

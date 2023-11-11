@@ -76,7 +76,7 @@ public class FilesAdapter : BaseAdapter
         return newFile.Adapt<ViewFile>();
     }
 
-    public async Task<ViewFile?> AttachFileAsync(dtoFileAttach dto)
+    public async Task<ViewFile?> AttachFileAsync(Token session, dtoFileAttach dto)
     {
         var foundFile = await _ef.Files
             .FirstOrDefaultAsync(file => file.FileID.ToString() == dto.IdFile);
@@ -93,7 +93,7 @@ public class FilesAdapter : BaseAdapter
             : await _ef.Documents.FirstOrDefaultAsync(o => o.DocumentID == dto.IdDocument);
 
         _ef.Update(foundFile);
-        await _ef.SaveChangesAsync();
+        await _ef.AuditChanges(session.OwnerToken);
         return foundFile.Adapt<ViewFile>();
     }
 }
