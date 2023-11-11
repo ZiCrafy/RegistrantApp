@@ -1,6 +1,8 @@
 @page "/contragents"
 @using RegistrantApp.Shared.PresentationLayer.Contragents
-@inject HttpClient Client;
+@using RegistrantApp.ClientApi
+@using RegistrantApp.Shared.Dto.Security
+@inject RApi Api;
 
 <h3>Контрагенты</h3>
 
@@ -21,7 +23,7 @@
         </label>
     </div>
 
-    <button type="button" class="btn btn-primary">Поиск</button>
+    <button @onclick="Request" type="button" class="btn btn-primary">Поиск</button>
 
 </div>
 <div>
@@ -81,13 +83,21 @@
 
     public ViewContragentPagination Result { get; set; } = new ();
 
-
+    protected override void OnInitialized()
+    {
+    }
 
     public async void Request()
     {
-        var json = await Client
-            .GetFromJsonAsync<ViewContragentPagination>("api/Contragents/Get")
-            ;
+        var credentials = new dtoCredentials()
+        {
+            Login = "7999323",
+            Password = "adfads",
+            IpAdress = "",
+            FingerPrint = "sd"
+        };
         
+        var json = await Api.Security.CreateSessionAsync(credentials);
+
     }
 }

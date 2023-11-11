@@ -51,12 +51,12 @@ public class Documents : BBApi
     }
 
     [HttpPut("Delete")]
-    public async Task<IActionResult> Delete([FromHeader] string token, long[] idsDocument)
+    public async Task<IActionResult> Delete([FromHeader] string token, long[] idsDocuments)
     {
         if (!ValidateToken(token, out var session))
             return StatusCode(401, _config["msg.InvalidToken"]);
 
-        await _adapter.DeleteAsync(idsDocument);
+        await _adapter.DeleteAsync(idsDocuments);
 
         return StatusCode(200);
     }

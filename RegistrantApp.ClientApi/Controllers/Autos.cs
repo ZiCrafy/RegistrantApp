@@ -4,9 +4,9 @@ using RestSharp;
 
 namespace RegistrantApp.ClientApi.Controllers;
 
-public class Auto : BControllerRest
+public class Autos : BControllerRest
 {
-    public Auto(string connectionString) : base(connectionString)
+    public Autos(string connectionString) : base(connectionString)
     {
         routeController = "Auto";
     }
@@ -14,11 +14,11 @@ public class Auto : BControllerRest
     /// <summary>
     /// Получение списко авто-машины у владельца аккаунта
     /// </summary>
-    /// <param name="token"></param>
+    /// <param name="token">Действующий токен с необходимами правами</param>
     /// <param name="idAccount">ID аккаунта</param>
     /// <param name="showDeleted">Показывать удаленные машины</param>
-    /// <returns></returns>
-    public async Task<RestResponse> Get(string token, long idAccount, bool showDeleted)
+    /// <returns>Объект ICollection ViewAuto с данными о машине</returns>
+    public async Task<RestResponse> GetAsync(string token, long idAccount, bool showDeleted)
     {
         var options = new RestRequest($"{route}/{routeController}/Get", Method.Get);
         options.AddHeader("token", token);
@@ -30,10 +30,10 @@ public class Auto : BControllerRest
     /// <summary>
     /// Создание машины
     /// </summary>
-    /// <param name="token"></param>
+    /// <param name="token">Действующий токен с необходимами правами</param>
     /// <param name="dto">Объект передачи</param>
-    /// <returns></returns>
-    public async Task<RestResponse> Create(string token, dtoAutoCreate dto)
+    /// <returns>Объект ViewAuto с данными о машине</returns>
+    public async Task<RestResponse> CreateAsync(string token, dtoAutoCreate dto)
     {
         var options = new RestRequest($"{route}/{routeController}/Create", Method.Post);
         options.AddHeader("token", token);
@@ -44,10 +44,10 @@ public class Auto : BControllerRest
     /// <summary>
     /// Обновление машины
     /// </summary>
-    /// <param name="token"></param>
+    /// <param name="token">Действующий токен с необходимами правами</param>
     /// <param name="dto">Объект передачи</param>
-    /// <returns></returns>
-    public async Task<RestResponse> Update(string token, dtoAutoUpdate dto)
+    /// <returns>Объект ViewAuto с данными о машине</returns>
+    public async Task<RestResponse> UpdateAsync(string token, dtoAutoUpdate dto)
     {
         var options = new RestRequest($"{route}/{routeController}/Update", Method.Put);
         options.AddHeader("token", token);
@@ -58,10 +58,10 @@ public class Auto : BControllerRest
     /// <summary>
     /// Удаление машины
     /// </summary>
-    /// <param name="token"></param>
+    /// <param name="token">Действующий токен с необходимами правами</param>
     /// <param name="idsAuto">Массив ID машин</param>
-    /// <returns></returns>
-    public async Task<RestResponse> Delete(string token, long[] idsAuto)
+    /// <returns>ОК - если данные удалены</returns>
+    public async Task<RestResponse> DeleteAsync(string token, long[] idsAuto)
     {
         var options = new RestRequest($"{route}/{routeController}/Delete", Method.Delete);
         options.AddHeader("token", token);

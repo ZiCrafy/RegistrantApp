@@ -32,7 +32,7 @@ public class SecurityAdapter : BaseAdapter
             DateTimeSessionStarted = DateTime.Now,
             DateTimeSessionExpired = DateTime.Now.AddHours(10),
             OwnerToken = foundAccount,
-            IPv4 = dto.IpAdres,
+            IPv4 = dto.IpAdress,
             FingerPrint = dto.FingerPrint
         };
 
