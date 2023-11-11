@@ -42,6 +42,8 @@ public class Security : BBApi
 
         var view = await _adapter.ChangePasswordAsync(session.OwnerToken.AccountID, dto);
 
-        return view is null ? StatusCode(404, _config["msg.security.ChangePassFailed"]) : StatusCode(200, _config["msg.security.SuccessPassChanged"]);
+        return view is null
+            ? StatusCode(404, _config["msg.security.ChangePassFailed"])
+            : StatusCode(200, _config["msg.security.SuccessPassChanged"]);
     }
 }

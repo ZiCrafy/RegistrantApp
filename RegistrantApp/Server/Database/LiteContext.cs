@@ -11,10 +11,9 @@ public class LiteContext : RaContext
     {
         _config = config;
     }
-    
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseSqlite(_config["connectionString"]);
     }
-    
 }

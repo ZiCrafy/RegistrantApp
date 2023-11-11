@@ -69,7 +69,7 @@ public class FilesAdapter : BaseAdapter
 
             await fileStream.ReadAsync(newFile.Bytes, 0, (int)file.Length);
         }
-        
+
         await _ef.AddAsync(newFile);
         await _ef.SaveChangesAsync();
 
@@ -80,14 +80,14 @@ public class FilesAdapter : BaseAdapter
     {
         var foundFile = await _ef.Files
             .FirstOrDefaultAsync(file => file.FileID.ToString() == dto.IdFile);
-        
+
         if (foundFile is null)
             return null;
-        
+
         foundFile.Order = string.IsNullOrEmpty(dto.IdOrder.ToString())
             ? null
             : await _ef.Orders.FirstOrDefaultAsync(o => o.OrderID == dto.IdOrder);
-        
+
         foundFile.Document = string.IsNullOrEmpty(dto.IdDocument.ToString())
             ? null
             : await _ef.Documents.FirstOrDefaultAsync(o => o.DocumentID == dto.IdDocument);

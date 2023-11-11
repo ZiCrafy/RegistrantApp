@@ -34,23 +34,23 @@ public class Orders : BBApi
     {
         if (!ValidateToken(token, out var session))
             return StatusCode(401);
-        
+
         var view = await _adapter.CreateAsync(dto);
-        
-        return view is null? StatusCode(400, _config["msg.orders.CreateError"]) : StatusCode(200, view);
+
+        return view is null ? StatusCode(400, _config["msg.orders.CreateError"]) : StatusCode(200, view);
     }
-    
+
     [HttpPut("Update")]
     public async Task<IActionResult> Update([FromHeader] string token, [FromBody] dtoOrderUpdate dto)
     {
         if (!ValidateToken(token, out var session))
             return StatusCode(401);
-        
+
         var view = await _adapter.UpdateAsync(dto);
-        
-        return view is null? StatusCode(400, _config["msg.orders.UpdateError"]) : StatusCode(200, view);
+
+        return view is null ? StatusCode(400, _config["msg.orders.UpdateError"]) : StatusCode(200, view);
     }
-    
+
     [HttpDelete("Delete")]
     public async Task<IActionResult> Delete([FromHeader] string token, long[] idsOrders)
     {

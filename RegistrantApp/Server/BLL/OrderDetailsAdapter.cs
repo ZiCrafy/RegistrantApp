@@ -30,15 +30,15 @@ public class OrderDetailsAdapter : BaseAdapter
 
         if (foundOrderDetail is null)
             return null;
-        
+
         dto.Adapt(foundOrderDetail);
 
         foundOrderDetail.StoreKeeperAccount = await _ef.Accounts
             .FirstOrDefaultAsync(account => account.AccountID == dto.IdAccountStoreKeeper);
-        
+
         if (foundOrderDetail.StoreKeeperAccount is null)
             return null;
-        
+
         _ef.Update(foundOrderDetail);
         await _ef.SaveChangesAsync();
 

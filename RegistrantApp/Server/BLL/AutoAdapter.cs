@@ -22,7 +22,7 @@ public class AutoAdapter : BaseAdapter
     {
         var data = await _ef.Autos
             .Include(x => x.OwnerAuto)
-            .Where(auto => auto!.OwnerAuto!.AccountID == 
+            .Where(auto => auto!.OwnerAuto!.AccountID ==
                 idAccount && auto.IsDeleted == showDeleted)
             .ToListAsync();
 
@@ -33,13 +33,13 @@ public class AutoAdapter : BaseAdapter
     {
         var auto = new Auto();
         dto.Adapt(auto);
-       
+
         auto.OwnerAuto = await _ef.Accounts
             .FirstOrDefaultAsync(account => account.AccountID == dto.OwnerAutoId);
 
         if (auto.OwnerAuto is null)
             return null;
-        
+
         await _ef.AddAsync(auto);
         await _ef.SaveChangesAsync();
         return auto.Adapt<ViewAuto>();
@@ -58,7 +58,7 @@ public class AutoAdapter : BaseAdapter
         if (dto.OwnerAutoId is not 0)
             found!.OwnerAuto = await _ef.Accounts
                 .FirstOrDefaultAsync(account => account.AccountID == dto.OwnerAutoId);
-        
+
         _ef.Update(found);
         await _ef.SaveChangesAsync();
         return found.Adapt<ViewAuto>();
@@ -74,7 +74,7 @@ public class AutoAdapter : BaseAdapter
             found.IsDeleted = true;
             _ef.Update(found);
         }
-        
+
         await _ef.SaveChangesAsync();
     }
 }

@@ -11,7 +11,7 @@ namespace RegistrantApp.Server.Controllers;
 public class Auto : BBApi
 {
     private readonly AutoAdapter _adapter;
-    
+
     public Auto(RaContext ef, IConfiguration config, AutoAdapter adapter) : base(ef, config)
     {
         _adapter = adapter;
@@ -27,29 +27,29 @@ public class Auto : BBApi
 
         return view == null ? StatusCode(404, _config["msg.NoContent"]) : StatusCode(200, view);
     }
-    
+
     [HttpPost("Create")]
     public async Task<IActionResult> Create([FromHeader] string token, dtoAutoCreate dto)
     {
         if (!ValidateToken(token, out var session))
             return StatusCode(401, _config["msg.InvalidToken"]);
-        
+
         var view = await _adapter.CreateAsync(dto);
 
         return view == null ? StatusCode(400, _config["msg.auto.CreateError"]) : StatusCode(200, view);
     }
-    
+
     [HttpPut("Update")]
     public async Task<IActionResult> Update([FromHeader] string token, dtoAutoUpdate dto)
     {
         if (!ValidateToken(token, out var session))
             return StatusCode(401, _config["msg.InvalidToken"]);
-        
+
         var view = await _adapter.UpdateAsync(dto);
-        
+
         return view == null ? StatusCode(400, _config["msg.auto.UpdateError"]) : StatusCode(200, view);
     }
-    
+
     [HttpDelete("Delete")]
     public async Task<IActionResult> Delete([FromHeader] string token, long[] idsAuto)
     {
@@ -57,7 +57,7 @@ public class Auto : BBApi
             return StatusCode(401, _config["msg.InvalidToken"]);
 
         await _adapter.DeleteAsync(idsAuto);
-        
+
         return StatusCode(200);
     }
 }

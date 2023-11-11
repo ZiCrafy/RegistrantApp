@@ -11,7 +11,7 @@ namespace RegistrantApp.Server.Controllers;
 public class OrderDetails : BBApi
 {
     private readonly OrderDetailsAdapter _adapter;
-    
+
     public OrderDetails(RaContext ef, IConfiguration config, OrderDetailsAdapter adapter) : base(ef, config)
     {
         _adapter = adapter;
@@ -22,20 +22,20 @@ public class OrderDetails : BBApi
     {
         if (!ValidateToken(token, out var session))
             return StatusCode(401, _config["msg.InvalidToken"]);
-        
+
         var view = await _adapter.GetAsync(idOrder);
 
-        return view is null? StatusCode(404, _config["msg.MoContent"]) : StatusCode(200, view);
+        return view is null ? StatusCode(404, _config["msg.MoContent"]) : StatusCode(200, view);
     }
 
     [HttpPut("Update")]
-    public async Task<IActionResult> Update([FromHeader] string token,[FromBody] dtoOrderDetailsUpdate dto)
+    public async Task<IActionResult> Update([FromHeader] string token, [FromBody] dtoOrderDetailsUpdate dto)
     {
         if (!ValidateToken(token, out var session))
             return StatusCode(401, _config["msg.InvalidToken"]);
 
         var view = await _adapter.UpdateAsync(dto);
-        
-        return view is null? StatusCode(404, _config["msg.MoContent"]) : StatusCode(200, view);
+
+        return view is null ? StatusCode(404, _config["msg.MoContent"]) : StatusCode(200, view);
     }
 }
