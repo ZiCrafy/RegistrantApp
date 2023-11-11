@@ -56,7 +56,7 @@ public class Accounts : BBApi
         if (!ValidateToken(token, out var session))
             return StatusCode(401, _config["msg.InvalidToken"]);
 
-        var view = await _adapter.AddAsync(dto);
+        var view = await _adapter.AddAsync(session, dto);
 
         return view == null ? StatusCode(503, _config["msg.account.CreateError"]) : StatusCode(200, view);
     }

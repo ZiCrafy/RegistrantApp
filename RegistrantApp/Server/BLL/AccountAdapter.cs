@@ -75,12 +75,14 @@ public class AccountAdapter : BaseAdapter
         return pagination;
     }
 
-    public async Task<ViewAccount?> AddAsync(dtoAccountCreate dto)
+    public async Task<ViewAccount?> AddAsync(Token session, dtoAccountCreate dto)
     {
         var account = new Account();
         dto.Adapt(account);
         await _ef.AddAsync(account);
         await _ef.SaveChangesAsync();
+        
+        //AuditAdd(session.OwnerToken, account);
         return account.Adapt<ViewAccount>();
     }
 

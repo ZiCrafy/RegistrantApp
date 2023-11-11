@@ -2,11 +2,11 @@
 
 namespace RegistrantApp.Shared.Database;
 
-public class Event 
+public class Audit 
 {
     [Key] public long EventID { get; set; }
     public DateTime DateTimeEvent { get; set; }
-    public Account OwnerEvent { get; set; }
+    public string OwnerEvent { get; set; }
     public string Object { get; set; }
     public string? Action { get; set; }
     public string? Property { get; set; }

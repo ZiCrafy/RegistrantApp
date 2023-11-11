@@ -9,7 +9,7 @@ public class RaContext : DbContext
     public DbSet<Account> Accounts { get; set; }
     public DbSet<Auto> Autos { get; set; }
     public DbSet<Contragent> Contragents { get; set; }
-    public DbSet<Event> Events { get; set; }
+    public DbSet<Audit> Audit { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderDetail> OrderDetails { get; set; }
     public DbSet<Token> Tokens { get; set; }
