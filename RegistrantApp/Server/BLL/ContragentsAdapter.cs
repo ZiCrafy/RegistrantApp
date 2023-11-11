@@ -14,7 +14,7 @@ public class ContragentsAdapter : BaseAdapter
     {
     }
 
-    public async Task<ViewContragentPagination>? GetAsync(int index, int recordsByPage,
+    public async Task<ViewContragentPagination?> GetAsync(int index, int recordsByPage,
         bool showDeleted, string search = "")
     {
         var totalRecords = _ef.Contragents.Count(
@@ -72,7 +72,7 @@ public class ContragentsAdapter : BaseAdapter
         return pagination;
     }
 
-    public async Task<ViewContragent> CreateAsync(dtoContragentCreate dto)
+    public async Task<ViewContragent?> CreateAsync(dtoContragentCreate dto)
     {
         var contragent = new Contragent();
         dto.Adapt(contragent);

@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegistrantApp.Client", "Reg
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegistrantApp.Shared", "RegistrantApp\Shared\RegistrantApp.Shared.csproj", "{B6279CF0-F0BB-4C8E-9734-0D41E0C0DE3C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegistrantApp.ClientApi", "RegistrantApp.ClientApi\RegistrantApp.ClientApi.csproj", "{D922BCDB-4136-446A-AFE2-8574A4FEDF78}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{B6279CF0-F0BB-4C8E-9734-0D41E0C0DE3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6279CF0-F0BB-4C8E-9734-0D41E0C0DE3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6279CF0-F0BB-4C8E-9734-0D41E0C0DE3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D922BCDB-4136-446A-AFE2-8574A4FEDF78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D922BCDB-4136-446A-AFE2-8574A4FEDF78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D922BCDB-4136-446A-AFE2-8574A4FEDF78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D922BCDB-4136-446A-AFE2-8574A4FEDF78}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
