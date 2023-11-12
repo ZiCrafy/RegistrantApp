@@ -6,6 +6,8 @@ using RegistrantApp.Shared.Dto.Orders;
 
 namespace RegistrantApp.Server.Controllers;
 
+[ApiController]
+[Route("api/[controller]")]
 public class Orders : BBApi
 {
     private readonly OrdersAdapter _adapter;
