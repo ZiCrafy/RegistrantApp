@@ -1,23 +1,69 @@
 ﻿@page "/security/login"
 @layout SecurityLayout
 
-<form>
-    <img class="mb-4" src="/docs/5.1/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
-    <h1 class="h3 mb-3 fw-normal">Вход в систему</h1>
+@using RegistrantApp.Shared.Dto.Security
+@using RegistrantApp.ClientApi
+@using RegistrantApp.Shared.PresentationLayer.Security
+@using Newtonsoft.Json
+@using Blazored.LocalStorage
 
-    <div class="form-floating">
-        <input type="email" class="form-control" id="floatingInput" placeholder="9ХХХХХХХХХ">
-        <label for="floatingInput">Номер телефона</label>
-    </div>
-    <div class="form-floating">
-        <input type="password" class="form-control" id="floatingPassword" placeholder="Пароль">
-        <label for="floatingPassword">Пароль</label>
-    </div>
+@inject RApi Api;
+@inject ISyncLocalStorageService LocalStorage
+@inject NavigationManager Navigation;
 
-    <button class="w-100 btn btn-lg btn-primary" type="submit">Войти</button>
-    <p class="mt-5 mb-3 text-muted">© 2017–2022</p>
+<PageTitle>Вход в систему</PageTitle>
+
+<form class="mb-3 mt-md-4">
+    <h2 class="fw-bold mb-2 text-uppercase ">Вход в систему</h2>
+    <p class="mb-4">Введите логин и пароль</p>
+    <div class="mb-3">
+        <label class="form-label ">Логин (номер телефона)</label>
+        <input @bind="_credentials.Login"  type="text" class="form-control" placeholder="9ХХХХХХХХХ">
+    </div>
+    <div class="mb-3">
+        <label class="form-label ">Пароль</label>
+        <input @bind="_credentials.Password"  type="password" class="form-control" laceholder="*******">
+    </div>
+    @if (!string.IsNullOrEmpty(_failedReponce))
+    {
+        <div class="alert alert-danger" role="alert">
+            @_failedReponce
+        </div>
+    }
+    <div class="d-grid">
+        <button @onclick="() => SendRequest(_credentials)" type="button" class="btn btn-outline-dark">Войти</button>
+    </div>
 </form>
 
 @code {
+
+    private dtoCredentials _credentials { get; set; } = new dtoCredentials();
+    private string? _failedReponce = "";
+
+    private async Task SendRequest(dtoCredentials credentials)
+    {
+        if(string.IsNullOrEmpty(_credentials.Login))
+        {
+            _failedReponce = "Не заполнен логин";
+            return;
+        }
+        
+        var responce = await Api.Security.CreateSessionAsync(_credentials);
+
+        if (responce.IsSuccessStatusCode && responce.Content is not null)
+        {
+            var token = JsonConvert.DeserializeObject<AccessToken>(responce.Content);
+            LocalStorage.SetItem("token", token?.Token);
+            LocalStorage.SetItem("tokenStart", token?.DateTimeSessionStarted);
+            LocalStorage.SetItem("tokenExpired", token?.DateTimeSessionExpired);
+            Navigation.NavigateTo("/", true);
+        }
+
+        if (!responce.IsSuccessStatusCode)
+        {
+            _failedReponce = responce?.Content?.Replace("\"", string.Empty);
+            StateHasChanged();
+        }
+    }
 
 }

@@ -19,7 +19,7 @@ public class Accounts : BControllerRest
     /// <returns>Объект ViewAccount с данными пользователя</returns>
     public async Task<RestResponse> GetAsync(string token, long accountId)
     {
-        var options = new RestRequest($"{route}/{routeController}/Get", Method.Get);
+        var options = new RestRequest($"{route}/{routeController}/GetFromId", Method.Get);
         options.AddHeader("token", token);
         options.AddParameter("accountId", accountId);
         return await client.ExecuteAsync(options);

@@ -1,0 +1,47 @@
+﻿@page "/security/logout"
+@layout SecurityLayout
+
+@using RegistrantApp.ClientApi
+@using Blazored.LocalStorage
+@using RegistrantApp.Shared.Dto.Security
+
+@inject RApi Api;
+@inject ILocalStorageService LocalStorage
+@inject NavigationManager Navigation;
+
+<PageTitle>Выход из системы</PageTitle>
+
+<form class="mb-3 mt-md-4">
+    <h2 class="fw-bold mb-2 text-uppercase ">Выход из системы</h2>
+    <p class="mb-4">Ваша сессия завершается, вы будете перенаправлены на страницу авторизации автоматически</p>
+</form>
+
+@code {
+
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await LogoutTask();
+    }
+
+    private async Task LogoutTask()
+    {
+        
+        var token = await LocalStorage.GetItemAsync<string>("token");
+        if(string.IsNullOrEmpty(token))
+            Navigation.NavigateTo("/security/login", true);
+        
+        var dto = new dtoAccessTokenFinished()
+        {
+            DateTimeSessionFinished = DateTime.Now,
+            Token = token
+        };
+        
+        await Api.Security.EndSessionAsync(dto);
+
+        await LocalStorage.RemoveItemAsync("token");
+        await LocalStorage.RemoveItemAsync("tokenStart");
+        await LocalStorage.RemoveItemAsync("tokenExpired");
+        Navigation.NavigateTo("/security/login", true);
+    }
+}

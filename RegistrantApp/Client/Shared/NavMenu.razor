@@ -1,4 +1,12 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿@using RegistrantApp.ClientApi
+@using Blazored.LocalStorage
+@using Newtonsoft.Json
+@using RegistrantApp.Shared.PresentationLayer.Accounts
+@inject RApi Api;
+@inject ILocalStorageService LocalStorage
+@inject NavigationManager Navigation;
+
+<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="">Регистрант v4</a>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
@@ -9,6 +17,14 @@
 
 <div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
     <nav class="flex-column">
+        @if (_currentUser is not null)
+        {
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="security/logout">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span> Выход (@_currentUser.FirstName @_currentUser.MiddleName.First() @_currentUser.LastName?.First())
+                </NavLink>
+            </div>
+        }
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="contragents">
                 <span class="oi oi-list-rich" aria-hidden="true"></span> Контрагенты
@@ -36,13 +52,38 @@
 </div>
 
 @code {
-    private bool collapseNavMenu = true;
+    private bool _collapseNavMenu = true;
 
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+    private string? NavMenuCssClass => _collapseNavMenu ? "collapse" : null;
+
+    private ViewAccount? _currentUser;
 
     private void ToggleNavMenu()
     {
-        collapseNavMenu = !collapseNavMenu;
+        _collapseNavMenu = !_collapseNavMenu;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await WatchLogon();
+    }
+
+    private async Task WatchLogon()
+    {
+        var token = await LocalStorage.GetItemAsync<string>("token");
+        
+        if(string.IsNullOrEmpty(token))
+            Navigation.NavigateTo("/security/login", true);
+        
+        var responce = await Api.Accounts.GetAsync(token, 0);
+
+        if (!responce.IsSuccessStatusCode)
+            Navigation.NavigateTo("/security/login", true);
+
+        if (responce.Content is not null)
+            _currentUser = JsonConvert.DeserializeObject<ViewAccount>(responce.Content);
+        
+        StateHasChanged();
     }
 
 }

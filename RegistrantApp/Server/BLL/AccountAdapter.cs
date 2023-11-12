@@ -14,10 +14,13 @@ public class AccountAdapter : BaseAdapter
     {
     }
 
-    public async Task<ViewAccount?> GetAsync(long idAccount)
+    public async Task<ViewAccount?> GetAsync(Token session, long idAccount)
     {
         var found = await _ef.Accounts
             .FirstOrDefaultAsync(account => account.AccountID == idAccount);
+
+        if (idAccount is 0)
+            found = session.OwnerToken;
 
         return found.Adapt<ViewAccount>();
     }

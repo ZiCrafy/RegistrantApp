@@ -23,10 +23,10 @@ public class Accounts : BBApi
         if (!ValidateToken(token, out var session))
             return StatusCode(401, _config["msg.InvalidToken"]);
 
-        if (accountId <= 0)
+        if (accountId < 0)
             return StatusCode(400, _config["msg.accounts.InvalidOptions"]);
 
-        var view = await _adapter.GetAsync(accountId);
+        var view = await _adapter.GetAsync(session, accountId);
 
         return view == null ? StatusCode(404, _config["msg.NoContent"]) : StatusCode(200, view);
     }
