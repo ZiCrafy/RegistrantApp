@@ -67,7 +67,7 @@ public class SecurityAdapter : BaseAdapter
         if (foundAccount is null)
             return null;
 
-        if (foundAccount.Password != MyValidator.CreateMD5(dto.OldPassword))
+        if (foundAccount.Password != MyValidator.CreateMd5(dto.OldPassword))
             return null;
 
         foundAccount.Password = dto.NewPassword;

@@ -3,6 +3,7 @@ using RegistrantApp.Server.BLL;
 using RegistrantApp.Server.Controllers.Base;
 using RegistrantApp.Server.Database.Base;
 using RegistrantApp.Shared.Dto.Security;
+using RegistrantApp.Shared.Validators;
 
 namespace RegistrantApp.Server.Controllers;
 
@@ -20,6 +21,8 @@ public class Security : BBApi
     [HttpPost("CreateSession")]
     public async Task<IActionResult> CreateSession([FromBody] dtoCredentials dto)
     {
+        dto.Password = MyValidator.CreateMd5(dto.Password);
+        
         var view = await _adapter.CreateSessionAsync(dto);
 
         return view is null ? StatusCode(401, _config["msg.security.AuthFailed"]) : StatusCode(200, view);

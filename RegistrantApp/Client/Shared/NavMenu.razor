@@ -63,18 +63,19 @@
         _collapseNavMenu = !_collapseNavMenu;
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnInitializedAsync()
     {
         await WatchLogon();
+        ;
     }
 
     private async Task WatchLogon()
     {
         var token = await LocalStorage.GetItemAsync<string>("token");
-        
-        if(string.IsNullOrEmpty(token))
+
+        if (token is null)
             Navigation.NavigateTo("/security/login", true);
-        
+
         var responce = await Api.Accounts.GetAsync(token, 0);
 
         if (!responce.IsSuccessStatusCode)
@@ -82,7 +83,7 @@
 
         if (responce.Content is not null)
             _currentUser = JsonConvert.DeserializeObject<ViewAccount>(responce.Content);
-        
+
         StateHasChanged();
     }
 

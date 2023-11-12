@@ -42,7 +42,7 @@ public class dtoAccountUpdate
     public string? Password
     {
         get => password;
-        set => password = MyValidator.CreateMD5(value!);
+        set => password = MyValidator.CreateMd5(value!);
     }
     public bool IsEmployee { get; set; }
 }

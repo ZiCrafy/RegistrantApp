@@ -6,6 +6,7 @@
 @using RegistrantApp.Shared.PresentationLayer.Security
 @using Newtonsoft.Json
 @using Blazored.LocalStorage
+@using RegistrantApp.Shared.Validators
 
 @inject RApi Api;
 @inject ISyncLocalStorageService LocalStorage
@@ -18,11 +19,11 @@
     <p class="mb-4">Введите логин и пароль</p>
     <div class="mb-3">
         <label class="form-label ">Логин (номер телефона)</label>
-        <input @bind="_credentials.Login"  type="text" class="form-control" placeholder="9ХХХХХХХХХ">
+        <input @bind="_credentials.Login" type="text" class="form-control" placeholder="9ХХХХХХХХХ">
     </div>
     <div class="mb-3">
         <label class="form-label ">Пароль</label>
-        <input @bind="_credentials.Password"  type="password" class="form-control" laceholder="*******">
+        <input @bind="_credentials.Password" type="password" class="form-control" laceholder="*******">
     </div>
     @if (!string.IsNullOrEmpty(_failedReponce))
     {
@@ -31,7 +32,7 @@
         </div>
     }
     <div class="d-grid">
-        <button @onclick="() => SendRequest(_credentials)" type="button" class="btn btn-outline-dark">Войти</button>
+        <button @onclick="() => SendRequestAsync(_credentials)" type="button" class="btn btn-outline-dark">Войти</button>
     </div>
 </form>
 
@@ -40,9 +41,9 @@
     private dtoCredentials _credentials { get; set; } = new dtoCredentials();
     private string? _failedReponce = "";
 
-    private async Task SendRequest(dtoCredentials credentials)
+    private async Task SendRequestAsync(dtoCredentials credentials)
     {
-        if(string.IsNullOrEmpty(_credentials.Login))
+        if (string.IsNullOrEmpty(_credentials.Login))
         {
             _failedReponce = "Не заполнен логин";
             return;
