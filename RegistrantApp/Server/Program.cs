@@ -25,6 +25,7 @@ builder.Services.AddScoped<DocumentAdapter>();
 builder.Services.AddScoped<FilesAdapter>();
 builder.Services.AddScoped<OrderDetailsAdapter>();
 builder.Services.AddScoped<OrdersAdapter>();
+builder.Services.AddScoped<AuditAdapter>();
 
 builder.Configuration.AddJsonFile("Properties\\options.json")
     .AddJsonFile("Properties\\message.json");
