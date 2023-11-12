@@ -10,7 +10,7 @@ public class Audit : BControllerRest
         routeController = "Audit";
     }
 
-    public async Task<object> Get(string token, DateOnly dateStart, DateOnly dateEnd, int index,
+    public async Task<object> GetAsync(string token, DateOnly dateStart, DateOnly dateEnd, int index,
         int recordsByPage, string? search)
     {
         var options = new RestRequest($"{route}/{routeController}/Get", Method.Get);
