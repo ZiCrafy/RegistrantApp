@@ -6,16 +6,61 @@
 @inject ILocalStorageService LocalStorage
 @inject NavigationManager Navigation;
 
-<div class="top-row ps-3 navbar navbar-dark">
+
+<div class="vh-100 d-flex justify-content-center align-items-center">
+    <div style="max-width: none; padding-right: 50px; padding-left: 50px;" class="container">
+        <div style="height: 95vh;" class="row d-flex justify-content-center">
+            <div style="background: linear-gradient(326deg, #0000a9, #9d7d83); padding: 0;" class="card shadow-lg">
+                <div class="card-body p-0">
+                    <nav class="flex-column">
+                        @if (_currentUser is not null)
+                        {
+                            <div class="nav-item px-3">
+                                <NavLink class="nav-link" href="security/logout">
+                                    <span class="oi oi-list-rich" aria-hidden="true"></span> Выход (@_currentUser.FirstName @_currentUser.MiddleName.First() @_currentUser.LastName?.First())
+                                </NavLink>
+                            </div>
+                        }
+                        <div class="nav-item px-3">
+                            <NavLink class="nav-link" href="contragents">
+                                <span class="oi oi-list-rich" aria-hidden="true"></span> Контрагенты
+                            </NavLink>
+                        </div>
+
+                        <div class="nav-item px-3">
+                            <NavLink class="nav-link" href="accounts">
+                                <span class="oi oi-list-rich" aria-hidden="true"></span> Водители/Сотрудники
+                            </NavLink>
+                        </div>
+                        <div class="nav-item px-3">
+                            <NavLink class="nav-link" href="orders">
+                                <span class="oi oi-list-rich" aria-hidden="true"></span> Заказы
+                            </NavLink>
+                        </div>
+
+                        <div class="nav-item px-3">
+                            <NavLink class="nav-link" href="security/audit">
+                                <span class="oi oi-list-rich" aria-hidden="true"></span> Журнал аудита
+                            </NavLink>
+                        </div>
+
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="">Регистрант v4</a>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
             <span class="navbar-toggler-icon"></span>
         </button>
     </div>
-</div>
+</div>*@
 
-<div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
+@*<div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
     <nav class="flex-column">
         @if (_currentUser is not null)
         {
@@ -43,13 +88,13 @@
         </div>
 
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="orders">
+            <NavLink class="nav-link" href="security/audit">
                 <span class="oi oi-list-rich" aria-hidden="true"></span> Журнал аудита
             </NavLink>
         </div>
 
     </nav>
-</div>
+</div>*@
 
 @code {
     private bool _collapseNavMenu = true;

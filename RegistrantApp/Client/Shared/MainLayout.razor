@@ -1,13 +1,22 @@
 ﻿@inherits LayoutComponentBase
 
 <div class="page">
-    <div class="sidebar">
-        <NavMenu/>
-    </div>
+    <NavMenu/>
 
     <main>
-        <article class="content px-4">
+        <div class="vh-100 d-flex justify-content-center align-items-center">
+            <div style="max-width: none; padding-right: 50px; padding-left: 50px;" class="container">
+                <div style="height: 95vh;" class="row d-flex justify-content-center">
+                    <div class="card bg-white shadow-lg">
+                        <div class="card-body p-5">
+                            @Body
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*<article class="content px-4">
             @Body
-        </article>
+        </article>*@
     </main>
 </div>
