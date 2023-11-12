@@ -8,14 +8,18 @@
 
     <ItemGroup>
         <PackageReference Include="Blazored.LocalStorage" Version="4.4.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.12"/>
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.12" PrivateAssets="all"/>
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.12" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.12" PrivateAssets="all" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\..\RegistrantApp.ClientApi\RegistrantApp.ClientApi.csproj" />
-        <ProjectReference Include="..\Shared\RegistrantApp.Shared.csproj"/>
+        <ProjectReference Include="..\Shared\RegistrantApp.Shared.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Pages\Accounts\" />
     </ItemGroup>
 
 </Project>
