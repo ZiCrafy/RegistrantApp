@@ -22,3 +22,6 @@ obj/
 /.vs/RegistrantApp/DesignTimeBuild/.dtbcache.v2
 /.vs/RegistrantApp/v17
 /.vs/RegistrantApp/v17/.suo
+/RegistrantApp/Client/RegistrantApp.Client.csproj.user
+/RegistrantApp/Server/RegistrantApp.Server.csproj.user
+/RegistrantApp/Server/LocalStorage.db
